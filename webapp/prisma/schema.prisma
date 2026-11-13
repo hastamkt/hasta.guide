@@ -1,0 +1,64 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String   @id @default(cuid())
+  email         String   @unique
+  passwordHash  String?
+  name          String?
+  createdAt     DateTime @default(now())
+
+  stripeCustomerId     String?   @unique
+  subscriptionStatus   String    @default("none") // none | active | vip | past_due | canceled
+  subscriptionPlan     String?   // monthly | annual
+  currentPeriodEnd     DateTime?
+
+  couponId      String?
+  coupon        Coupon?   @relation(fields: [couponId], references: [id])
+  payments      Payment[]
+}
+
+// Micro-influenciador que divulga um cupom e recebe comissão por mensalidade paga.
+model Affiliate {
+  id        String   @id @default(cuid())
+  name      String
+  contact   String? // pix, whatsapp ou email pra pagar a comissão
+  createdAt DateTime @default(now())
+  coupons   Coupon[]
+}
+
+model Coupon {
+  id                String     @id @default(cuid())
+  code              String     @unique
+  percentOff        Int        // 0-100, desconto pro cliente
+  commissionPercent Int        @default(0) // % do valor pago que vai pro afiliado
+  freeNoCard        Boolean    @default(false) // libera acesso sem passar cartão (não gera comissão)
+  active            Boolean    @default(true)
+  createdAt         DateTime   @default(now())
+
+  affiliateId String?
+  affiliate   Affiliate? @relation(fields: [affiliateId], references: [id])
+
+  users    User[]
+  payments Payment[]
+}
+
+// Um registro por fatura paga (Stripe invoice.paid) — base da adimplência e da comissão.
+model Payment {
+  id               String   @id @default(cuid())
+  stripeInvoiceId  String   @unique
+  amountPaid       Int      // em centavos
+  commissionAmount Int      @default(0) // em centavos
+  paidAt           DateTime @default(now())
+
+  userId   String
+  user     User    @relation(fields: [userId], references: [id])
+  couponId String?
+  coupon   Coupon? @relation(fields: [couponId], references: [id])
+}
