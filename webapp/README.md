@@ -41,8 +41,9 @@ App Next.js que coloca o catálogo atrás de login + assinatura paga, hospedáve
    provedor. Configure o domínio custom no painel da hospedagem escolhida.
 5. Copie `.env.example` pra `.env`, preenche tudo e define `ADMIN_EMAIL` com seu email
    (o mesmo que você usa pra logar no site) pra liberar o `/admin`.
-6. Depois do primeiro `npm run db:push`, rode `npm run db:seed` pra criar os cupons
-   `BLACK2026` e `CLIENTEVIP`. Novos cupons (com comissão de afiliado) se cadastram em
+6. O `build` do projeto (`package.json`) já roda `prisma db push` + o seed
+   (`BLACK2026`, `CLIENTEVIP`) toda vez — em produção (Vercel) isso acontece sozinho a cada
+   deploy, não precisa rodar na mão. Novos cupons (com comissão de afiliado) se cadastram em
    `/admin/cupons`, sem precisar editar código.
 
 ## Cadastrando um cupom de afiliado (ex.: Jefferson / jick50)
