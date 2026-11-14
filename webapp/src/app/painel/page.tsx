@@ -2,13 +2,15 @@ import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 import { authOptions } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
+import { isAdminEmail } from "@/lib/admin";
 
 export default async function PainelPage() {
   const session = await getServerSession(authOptions);
   if (!session?.user?.email) redirect("/login");
 
   const user = await prisma.user.findUnique({ where: { email: session.user.email } });
-  const active = user?.subscriptionStatus === "active" || user?.subscriptionStatus === "vip";
+  // Admin (ADMIN_EMAIL) sempre tem acesso, sem precisar de cupom nem pagamento.
+  const active = isAdminEmail(session.user.email) || user?.subscriptionStatus === "active" || user?.subscriptionStatus === "vip";
 
   return (
     <main style={{ maxWidth: 480, margin: "60px auto", padding: 20, textAlign: "center" }}>
