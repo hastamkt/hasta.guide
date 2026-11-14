@@ -16,12 +16,17 @@ export async function POST(req: Request) {
   const user = await prisma.user.findUnique({ where: { email: session.user.email } });
   if (!user) return NextResponse.json({ error: "Usuário não encontrado." }, { status: 404 });
 
+  if (coupon && coupon.maxUses !== null && coupon.usesCount >= coupon.maxUses) {
+    return NextResponse.json({ error: "Esse cupom já atingiu o limite de usos." }, { status: 400 });
+  }
+
   // Cupom tipo freeNoCard (ex.: cliente VIP): libera na hora, sem Stripe, sem cartão.
   if (coupon?.freeNoCard) {
     await prisma.user.update({
       where: { id: user.id },
       data: { subscriptionStatus: "vip", subscriptionPlan: plan ?? "monthly", couponId: coupon.id },
     });
+    await prisma.coupon.update({ where: { id: coupon.id }, data: { usesCount: { increment: 1 } } });
     return NextResponse.json({ ok: true, free: true });
   }
 

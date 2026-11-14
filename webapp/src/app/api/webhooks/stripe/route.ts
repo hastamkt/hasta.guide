@@ -33,6 +33,9 @@ export async function POST(req: Request) {
             ...(coupon ? { couponId: coupon.id } : {}),
           },
         });
+        if (coupon) {
+          await prisma.coupon.update({ where: { id: coupon.id }, data: { usesCount: { increment: 1 } } });
+        }
       }
       break;
     }

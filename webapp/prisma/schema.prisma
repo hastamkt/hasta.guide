@@ -40,6 +40,8 @@ model Coupon {
   commissionPercent Int        @default(0) // % do valor pago que vai pro afiliado
   freeNoCard        Boolean    @default(false) // libera acesso sem passar cartão (não gera comissão)
   active            Boolean    @default(true)
+  maxUses           Int?       // limite de clientes que podem usar o cupom; null = ilimitado
+  usesCount         Int        @default(0) // quantos já usaram (incrementado no primeiro pagamento/liberação)
   createdAt         DateTime   @default(now())
 
   affiliateId String?

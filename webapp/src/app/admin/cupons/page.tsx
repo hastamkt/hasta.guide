@@ -14,6 +14,7 @@ export default async function CuponsPage() {
         <input name="code" placeholder="Código (ex.: JICK50)" required style={inputStyle} />
         <input name="percentOff" type="number" min={0} max={100} placeholder="% desconto cliente" required style={{ ...inputStyle, maxWidth: 160 }} />
         <input name="commissionPercent" type="number" min={0} max={100} placeholder="% comissão afiliado" style={{ ...inputStyle, maxWidth: 160 }} />
+        <input name="maxUses" type="number" min={1} placeholder="Qtd. disponível (vazio = ilimitado)" style={{ ...inputStyle, maxWidth: 220 }} />
         <select name="affiliateId" style={{ ...inputStyle, maxWidth: 200 }}>
           <option value="">Sem afiliado</option>
           {affiliates.map((a) => (
@@ -34,6 +35,7 @@ export default async function CuponsPage() {
             <th style={th}>% desconto</th>
             <th style={th}>% comissão</th>
             <th style={th}>Afiliado</th>
+            <th style={th}>Usos</th>
             <th style={th}>Status</th>
             <th style={th}></th>
           </tr>
@@ -45,19 +47,25 @@ export default async function CuponsPage() {
               <td style={td}>{c.percentOff}%</td>
               <td style={td}>{c.commissionPercent}%</td>
               <td style={td}>{c.affiliate?.name ?? "—"}</td>
+              <td style={td}>{c.usesCount}{c.maxUses ? ` / ${c.maxUses}` : " / ilimitado"}</td>
               <td style={td}>{c.active ? "Ativo" : "Inativo"}</td>
               <td style={td}>
-                <form action={toggleCoupon.bind(null, c.id, !c.active)}>
-                  <button type="submit" style={{ ...buttonStyle, padding: "6px 12px", fontSize: 12 }}>
-                    {c.active ? "Desativar" : "Ativar"}
-                  </button>
-                </form>
+                <div style={{ display: "flex", gap: 8 }}>
+                  <a href={`/admin/cupons/${c.id}`} style={{ ...buttonStyle, padding: "6px 12px", fontSize: 12, textDecoration: "none", display: "inline-block" }}>
+                    Editar
+                  </a>
+                  <form action={toggleCoupon.bind(null, c.id, !c.active)}>
+                    <button type="submit" style={{ ...buttonStyle, padding: "6px 12px", fontSize: 12, background: "#fff", color: "#4f1964", border: "1px solid #4f1964" }}>
+                      {c.active ? "Desativar" : "Ativar"}
+                    </button>
+                  </form>
+                </div>
               </td>
             </tr>
           ))}
           {coupons.length === 0 && (
             <tr>
-              <td style={td} colSpan={6}>Nenhum cupom ainda.</td>
+              <td style={td} colSpan={7}>Nenhum cupom ainda.</td>
             </tr>
           )}
         </tbody>
