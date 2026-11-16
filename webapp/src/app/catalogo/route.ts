@@ -14,18 +14,24 @@ const FILE = path.join(process.cwd(), "src/content/catalogo.html");
 export async function GET() {
   const session = await getServerSession(authOptions);
   let paid = false;
+  let favorites: string[] = [];
 
   if (session?.user?.email) {
     if (isAdminEmail(session.user.email)) {
       paid = true;
-    } else {
-      const user = await prisma.user.findUnique({ where: { email: session.user.email } });
+    }
+    const user = await prisma.user.findUnique({ where: { email: session.user.email } });
+    if (!paid) {
       paid = user?.subscriptionStatus === "active" || user?.subscriptionStatus === "vip";
+    }
+    if (user) {
+      const favs = await prisma.favorite.findMany({ where: { userId: user.id }, select: { commandId: true } });
+      favorites = favs.map((f) => f.commandId);
     }
   }
 
   const html = fs.readFileSync(FILE, "utf8");
-  const accessScript = `window.__ACCESS__ = ${JSON.stringify({ paid, free: FREE_CATEGORIES, loggedIn: !!session })};\n`;
+  const accessScript = `window.__ACCESS__ = ${JSON.stringify({ paid, free: FREE_CATEGORIES, loggedIn: !!session, favorites })};\n`;
   const withAccess = html.replace("<script>", "<script>\n" + accessScript);
 
   return new Response(withAccess, {

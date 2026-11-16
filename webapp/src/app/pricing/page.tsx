@@ -4,6 +4,8 @@ import { useSession, signIn } from "next-auth/react";
 
 export default function PricingPage() {
   const { data: session } = useSession();
+  const status = (session?.user as any)?.subscriptionStatus;
+  const alreadyActive = status === "active" || status === "vip";
   const [plan, setPlan] = useState<"monthly" | "annual">("monthly");
   const [couponCode, setCouponCode] = useState("");
   const [loading, setLoading] = useState(false);
@@ -26,6 +28,22 @@ export default function PricingPage() {
     if (data.error) return setError(data.error);
     if (data.free) return (window.location.href = "/painel?gratis=1");
     if (data.url) window.location.href = data.url;
+  }
+
+  if (alreadyActive) {
+    return (
+      <main style={{ maxWidth: 480, margin: "60px auto", padding: 20, textAlign: "center" }}>
+        <h1 style={{ color: "#4f1964", fontSize: 26 }}>Você já tem acesso! 🎉</h1>
+        <p style={{ color: "#6c6180", marginTop: 8 }}>Sua assinatura já está ativa — não precisa assinar de novo.</p>
+        <a href="/catalogo" style={{ display: "inline-block", marginTop: 20, background: "#4f1964", color: "#fff", padding: "12px 24px", borderRadius: 999, textDecoration: "none", fontWeight: 700 }}>
+          Abrir catálogo
+        </a>
+        <br />
+        <a href="/painel" style={{ display: "inline-block", marginTop: 12, color: "#4f1964", fontWeight: 700, textDecoration: "underline" }}>
+          Ver minha conta
+        </a>
+      </main>
+    );
   }
 
   return (

@@ -36,7 +36,8 @@ export default async function PainelPage() {
 
   return (
     <main style={{ maxWidth: 480, margin: "60px auto", padding: 20, textAlign: "center" }}>
-      <h1 style={{ color: "#4f1964" }}>Olá, {session.user.email}</h1>
+      <p style={{ margin: 0, fontSize: 13, letterSpacing: ".08em", textTransform: "uppercase", color: "#6c6180", fontWeight: 700 }}>Minha Conta</p>
+      <h1 style={{ color: "#4f1964", marginTop: 4 }}>Olá, {session.user.email}</h1>
 
       <div style={{ marginTop: 20, padding: 18, borderRadius: 12, border: "1px solid #e2d9ee", textAlign: "left" }}>
         <p style={{ margin: 0, fontSize: 13, color: "#6c6180" }}>Assinatura</p>
@@ -61,9 +62,14 @@ export default async function PainelPage() {
         )}
       </div>
 
-      <a href="/catalogo" style={{ display: "inline-block", marginTop: 16, background: "#4f1964", color: "#fff", padding: "12px 24px", borderRadius: 999, textDecoration: "none", fontWeight: 700 }}>
-        Abrir catálogo
-      </a>
+      <div style={{ display: "flex", gap: 10, justifyContent: "center", flexWrap: "wrap", marginTop: 16 }}>
+        <a href="/catalogo" style={{ background: "#4f1964", color: "#fff", padding: "12px 24px", borderRadius: 999, textDecoration: "none", fontWeight: 700 }}>
+          Abrir catálogo
+        </a>
+        <a href="/catalogo#favoritos" style={{ background: "#fff", border: "1px solid #4f1964", color: "#4f1964", padding: "12px 24px", borderRadius: 999, textDecoration: "none", fontWeight: 700 }}>
+          ⭐ Meus favoritos
+        </a>
+      </div>
 
       {!active && (
         <>

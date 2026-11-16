@@ -22,6 +22,21 @@ model User {
   couponId      String?
   coupon        Coupon?   @relation(fields: [couponId], references: [id])
   payments      Payment[]
+  favorites     Favorite[]
+}
+
+// Comando/skill marcado como favorito por um usuário, pra reencontrar rápido.
+// commandId é "part-num-slug" pros comandos (ex.: "chatgpt-20-handlettering") ou
+// "skill-<título>" pras skills/MCPs — o catalogo.html monta e lê essa chave.
+model Favorite {
+  id        String   @id @default(cuid())
+  commandId String
+  createdAt DateTime @default(now())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  @@unique([userId, commandId])
 }
 
 // Micro-influenciador que divulga um cupom e recebe comissão por mensalidade paga.
