@@ -544,6 +544,7 @@ function addGroupHead(label){
   h.className = 'index-megahead';
   h.innerHTML = `<h2>${label}</h2>`;
   indexGrid.appendChild(h);
+  return h;
 }
 function addSubHead(label){
   const h = document.createElement('div');
@@ -583,7 +584,7 @@ INDEX_ORDER.forEach(g=>{
   (g.items||[]).forEach(([p,n])=>addIdxCard(p,n));
   (g.subs||[]).forEach(s=>{ addSubHead(s.sub); s.items.forEach(([p,n])=>addIdxCard(p,n)); });
 });
-addGroupHead('Guias & recursos extra');
+const guiasHead = addGroupHead('Guias & recursos extra');
 
 // Motions — Guia Geral (prompts longos, não /comandos)
 (function(){
@@ -932,7 +933,12 @@ const SKILLS = [
     sec.open = true;
     sec.scrollIntoView({behavior:'smooth', block:'start'});
   });
-  indexGrid.appendChild(idx);
+  // Nasce dentro de "Comandos por IA específica" (é uma skill do Claude Code), não separado em "Guias & recursos extra".
+  const skillsSubHead = document.createElement('div');
+  skillsSubHead.className = 'index-subhead';
+  skillsSubHead.textContent = 'Skills para Claude Code';
+  indexGrid.insertBefore(skillsSubHead, guiasHead);
+  indexGrid.insertBefore(idx, guiasHead);
 
   const details = document.createElement('details');
   details.id = id;
