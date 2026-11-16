@@ -44,7 +44,14 @@ export async function POST(req: Request) {
       const customerId = invoice.customer as string;
       const user = await prisma.user.findFirst({ where: { stripeCustomerId: customerId } });
       if (user) {
-        await prisma.user.update({ where: { id: user.id }, data: { subscriptionStatus: "active" } });
+        const periodEndUnix = invoice.lines.data[0]?.period?.end;
+        await prisma.user.update({
+          where: { id: user.id },
+          data: {
+            subscriptionStatus: "active",
+            ...(periodEndUnix ? { currentPeriodEnd: new Date(periodEndUnix * 1000) } : {}),
+          },
+        });
 
         const coupon = user.couponId ? await prisma.coupon.findUnique({ where: { id: user.couponId } }) : null;
         const commissionAmount = coupon?.commissionPercent

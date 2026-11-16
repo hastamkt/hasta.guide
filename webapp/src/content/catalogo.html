@@ -122,6 +122,10 @@ section.cat[hidden]{display:none;}
 }
 .cat-head h3{font-family:'Baloo 2',sans-serif; font-size:17px; font-weight:800; letter-spacing:-.01em;}
 .claude-tag{font-size:10.5px; font-weight:800; letter-spacing:.06em; text-transform:uppercase; color:var(--yellow-ink); background:var(--yellow); border-radius:5px; padding:2px 8px; flex:none;}
+.lock-tag{font-size:10.5px; font-weight:800; letter-spacing:.06em; text-transform:uppercase; color:#fff; background:#8a7a9a; border-radius:5px; padding:2px 8px; flex:none;}
+.locked-cat{text-align:center; padding:28px 20px; border:1px dashed var(--border); border-radius:12px; background:var(--surface);}
+.locked-cat p{color:var(--muted); font-size:13.5px; margin:0 0 12px;}
+.locked-cat .btn-pill{display:inline-block;}
 .gemini-tag{font-size:10.5px; font-weight:800; letter-spacing:.06em; text-transform:uppercase; color:#fff; background:linear-gradient(100deg,#ff5c5c,#a259ff 50%,#3b82f6); border-radius:5px; padding:2px 8px; flex:none;}
 .img-tag{font-size:10.5px; font-weight:700; letter-spacing:.02em; color:var(--muted); background:var(--chip); border-radius:5px; padding:2px 8px; flex:none; display:inline-flex; align-items:center; gap:4px; white-space:nowrap;}
 .cat-badge.gemini{background:linear-gradient(135deg,#ff5c5c,#a259ff 50%,#3b82f6); color:#fff;}
@@ -478,8 +482,11 @@ const CMD_THUMBS = {"11-35mm":"examples/cat11-35mm.png","11-360view":"examples/c
 let __idxDelay = 0;
 function nextDelay(){ const d = __idxDelay; __idxDelay += 18; return Math.min(d,500)+'ms'; }
 
+const ACCESS = window.__ACCESS__ || { paid: false, free: [], loggedIn: false };
 DATA.forEach(([part,num,title,items])=>{
   const id = slug(part,num);
+  const isFree = ACCESS.free.includes(part+'-'+num);
+  const locked = !ACCESS.paid && !isFree;
 
   const sec = document.createElement('section');
   sec.className = 'cat';
@@ -500,23 +507,26 @@ DATA.forEach(([part,num,title,items])=>{
         ${part==='claude'?'<span class="claude-tag">Claude</span>':''}
         ${part==='gemini'?'<span class="gemini-tag">Gemini</span>':''}
         ${part==='chatgpt'&&num>=12&&num<=46?'<span class="img-tag">📎 precisa de imagem</span>':''}
+        ${locked?'<span class="lock-tag">🔒 Pago</span>':''}
       </div>
       <div style="display:flex;align-items:center;gap:10px;">
         <span class="cat-count">${items.length}</span>
         <svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m6 9 6 6 6-6"/></svg>
       </div>
     </summary>
-    <div class="cat-body">${EXAMPLES[num] ? `<div class="example-shot"><img src="${EXAMPLES[num].file}" alt="Exemplo gerado com /${EXAMPLES[num].cmd}" loading="lazy"><div class="cap"><span class="cmd">/${EXAMPLES[num].cmd}</span><span class="lbl">exemplo gerado</span></div></div>` : ''}<div class="cmd-grid"></div></div>`;
-  const grid = details.querySelector('.cmd-grid');
-  items.forEach(([cmd,desc])=>{
-    const card = document.createElement('button');
-    card.className = 'cmd-card';
-    card.dataset.searchtext = (cmd+' '+desc).toLowerCase();
-    const thumb = CMD_THUMBS[num+"-"+cmd];
-    card.innerHTML = (thumb?`<img class="cmd-thumb" src="${thumb}" alt="" loading="lazy">`:"") + `<span class="cmd">/${cmd}<svg class="copy-ic" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></svg></span><span class="desc">${desc}</span>`;
-    card.addEventListener('click', ()=>copyCmd(cmd));
-    grid.appendChild(card);
-  });
+    <div class="cat-body">${EXAMPLES[num] ? `<div class="example-shot"><img src="${EXAMPLES[num].file}" alt="Exemplo gerado com /${EXAMPLES[num].cmd}" loading="lazy"><div class="cap"><span class="cmd">/${EXAMPLES[num].cmd}</span><span class="lbl">exemplo gerado</span></div></div>` : ''}${locked ? `<div class="locked-cat"><p>🔒 ${items.length} comando${items.length>1?'s':''} aqui é conteúdo pago.</p><a class="btn-pill" href="/pricing">${ACCESS.loggedIn?'Ver planos e desbloquear':'Cadastre-se e desbloqueie'}</a></div>` : '<div class="cmd-grid"></div>'}</div>`;
+  if (!locked) {
+    const grid = details.querySelector('.cmd-grid');
+    items.forEach(([cmd,desc])=>{
+      const card = document.createElement('button');
+      card.className = 'cmd-card';
+      card.dataset.searchtext = (cmd+' '+desc).toLowerCase();
+      const thumb = CMD_THUMBS[num+"-"+cmd];
+      card.innerHTML = (thumb?`<img class="cmd-thumb" src="${thumb}" alt="" loading="lazy">`:"") + `<span class="cmd">/${cmd}<svg class="copy-ic" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></svg></span><span class="desc">${desc}</span>`;
+      card.addEventListener('click', ()=>copyCmd(cmd));
+      grid.appendChild(card);
+    });
+  }
   sectionsEl.appendChild(details);
 });
 
@@ -534,7 +544,8 @@ function addIdxCard(part,num){
   idx.dataset.part = part;
   idx.dataset.target = id;
   idx.dataset.searchtext = (title+' '+items.map(i=>i[0]+' '+i[1]).join(' ')).toLowerCase();
-  idx.innerHTML = `<span class="num">${part==='claude'?'CLAUDE':part==='gemini'?'GEMINI':'0'+(num<10?'0'+num:num)}</span><span class="nm">${title}</span><span class="ct">${items.length} comando${items.length>1?'s':''}</span>`;
+  const locked = !ACCESS.paid && !ACCESS.free.includes(part+'-'+num);
+  idx.innerHTML = `<span class="num">${part==='claude'?'CLAUDE':part==='gemini'?'GEMINI':'0'+(num<10?'0'+num:num)}</span><span class="nm">${title}</span><span class="ct">${items.length} comando${items.length>1?'s':''}${locked?' · 🔒':''}</span>`;
   idx.addEventListener('click', ()=>{
     const sec = document.getElementById(id);
     sec.open = true;
