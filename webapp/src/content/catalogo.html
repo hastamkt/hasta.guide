@@ -285,7 +285,7 @@ mark{background:var(--purple); color:var(--purple-ink); border-radius:3px; paddi
   </header>
 
   <div class="howto">
-    <b>Como usar:</b> digite a barra (<code>/</code>) seguida do comando, antes ou depois da sua pergunta, no chat da IA. Clique num comando abaixo para copiá-lo. As categorias 12–46 são efeitos visuais — exigem uma imagem anexada junto do comando. As categorias Claude e Gemini podem não funcionar fora da respectiva IA. Combine comandos, por exemplo <code>/brainstorm + /concise</code>. Na categoria <b>Motions</b>, clique em "Ver prompt" para abrir o template e em "Copiar prompt" para levar o texto já com a identidade Hasta embutida. O <b>Guia de Instagram</b> traz prompts e dicas de 8 posts, com filtro por tipo e por ferramenta/IA. Em <b>Prompts Pro</b> ficam mega-prompts prontos de fotografia e vídeo profissional (produto, retrato, VFX e anúncio em vídeo) — cole o texto inteiro como instrução inicial da conversa, antes de anexar suas imagens.
+    <b>Como usar:</b> digite a barra (<code>/</code>) seguida do comando, antes ou depois da sua pergunta, no chat da IA. Clique num comando abaixo para copiá-lo. As categorias 12–46 são efeitos visuais — exigem uma imagem anexada junto do comando. As categorias Claude e Gemini podem não funcionar fora da respectiva IA. Combine comandos, por exemplo <code>/brainstorm + /concise</code>. Dentro de <b>Claude</b> ficam também os <b>Motions</b> (clique em "Ver prompt" pra abrir o template e em "Copiar prompt" pra levar o texto já com a identidade Hasta embutida) e as <b>Skills</b>. Em <b>Prompts Pro</b> ficam os mega-prompts de fotografia e vídeo profissional (produto, retrato, VFX e anúncio em vídeo — cole o texto inteiro como instrução inicial da conversa, antes de anexar suas imagens) e os prompts de <b>Edição de Imagem</b>, com filtro por tipo e por ferramenta/IA.
   </div>
 
   <div class="controls">
@@ -297,12 +297,9 @@ mark{background:var(--purple); color:var(--purple-ink); border-radius:3px; paddi
       <div class="seg" id="partSeg">
         <button data-part="all" class="active">Todos · 1148</button>
         <button data-part="chatgpt">ChatGPT · 1008</button>
-        <button data-part="claude">Claude · 9</button>
+        <button data-part="claude">Claude · 116</button>
         <button data-part="gemini">Gemini · 4</button>
-        <button data-part="motion">Motions · 5</button>
-        <button data-part="insta">Instagram · 30</button>
-        <button data-part="skills">Skills · 102</button>
-        <button data-part="prof">Prompts Pro · 6</button>
+        <button data-part="prof">Prompts Pro · 36</button>
       </div>
       <button class="theme-btn" id="themeBtn" type="button">🌓 Tema</button>
     </div>
@@ -316,7 +313,7 @@ mark{background:var(--purple); color:var(--purple-ink); border-radius:3px; paddi
   <div class="empty-state" id="emptyState" hidden><b>Nada encontrado</b>Tenta outra palavra — por exemplo "vídeo", "marca" ou "retrato".</div>
 
   <div class="footer">
-    <span>1021 comandos + 5 motions + 30 dicas de Instagram + 102 skills + 6 prompts pro · 52 categorias</span>
+    <span>1021 comandos + 116 recursos Claude (comandos, skills e motions) + 36 prompts de edição de imagem e foto pro · 52 categorias</span>
     <div class="logo-mark">
       <img src="examples/hasta-icon.png" width="16" height="16" alt="">
       <span>Guia de Comandos Secretos — @hasta.mkt</span>
@@ -433,17 +430,15 @@ const MOTION_TIPS = [
 const sectionsEl = document.getElementById('sections');
 const indexGrid = document.getElementById('indexGrid');
 const totalChatGPT = DATA.filter(d=>d[0]==='chatgpt').reduce((a,d)=>a+d[3].length,0);
-const totalClaude = DATA.filter(d=>d[0]==='claude').reduce((a,d)=>a+d[3].length,0);
+const totalClaude = DATA.filter(d=>d[0]==='claude').reduce((a,d)=>a+d[3].length,0) + MOTIONS.length + 102; // +5 motions +102 skills, agora tudo dentro de Claude
 const totalGemini = DATA.filter(d=>d[0]==='gemini').reduce((a,d)=>a+d[3].length,0);
+const totalProf = 6 + 30; // 6 prompts pro + 30 prompts de edição de imagem (ex-Instagram), agora tudo dentro de Prompts Pro
 
 document.getElementById('statPills').innerHTML = `
   <div class="stat-pill"><span class="dot"></span>ChatGPT <b data-count="${totalChatGPT}">0</b></div>
   <div class="stat-pill"><span class="dot"></span>Claude <b data-count="${totalClaude}">0</b></div>
   <div class="stat-pill"><span class="dot"></span>Gemini <b data-count="${totalGemini}">0</b></div>
-  <div class="stat-pill"><span class="dot"></span>Motions <b data-count="${MOTIONS.length}">0</b></div>
-  <div class="stat-pill"><span class="dot"></span>Instagram <b data-count="30">0</b></div>
-  <div class="stat-pill"><span class="dot"></span>Skills <b data-count="102">0</b></div>
-  <div class="stat-pill"><span class="dot"></span>Prompts Pro <b data-count="6">0</b></div>
+  <div class="stat-pill"><span class="dot"></span>Prompts Pro <b data-count="${totalProf}">0</b></div>
   <div class="stat-pill">Categorias <b data-count="${DATA.length+4}">0</b></div>`;
 document.querySelectorAll('.stat-pill b[data-count]').forEach(el=>{
   const target = parseInt(el.dataset.count,10);
@@ -611,7 +606,7 @@ let motionSubHeadEl; // preenchido pela IIFE de Motions logo abaixo; Skills se a
   const idx = document.createElement('button');
   idx.className = 'idx-card';
   idx.style.animationDelay = nextDelay();
-  idx.dataset.part = 'motion';
+  idx.dataset.part = 'claude';
   idx.dataset.searchtext = searchText;
   idx.innerHTML = `<span class="num">MOTION</span><span class="nm">Motions — Guia Geral</span><span class="ct">${MOTIONS.length} prompts</span>`;
   idx.addEventListener('click', ()=>{
@@ -630,7 +625,7 @@ let motionSubHeadEl; // preenchido pela IIFE de Motions logo abaixo; Skills se a
   const details = document.createElement('details');
   details.id = id;
   details.className = 'cat';
-  details.dataset.part = 'motion';
+  details.dataset.part = 'claude';
   details.dataset.searchtext = searchText;
   details.innerHTML = `
     <summary class="cat-head">
@@ -688,7 +683,7 @@ let motionSubHeadEl; // preenchido pela IIFE de Motions logo abaixo; Skills se a
   sectionsEl.appendChild(details);
 })();
 
-// Guia de Instagram — conhecimento coletado de 8 posts, classificado por tipo e por ferramenta/IA
+// Edição de Imagem (ex-"Guia de Instagram") — vive dentro de Prompts Pro, classificado por tipo e por ferramenta/IA
 const TYPE_LABELS = {imagem:'Prompt de imagem', motion:'Prompt de motion', video:'Edição de vídeo', ferramenta:'Ferramenta', seo:'SEO', oferta:'Oferta de serviço'};
 const TOOL_LABELS = {imagem:'Gerador de imagem', claude:'Claude', claudecode:'Claude Code', kairogen:'Kairogen (MCP)', bancos:'Bancos de imagem', github:'GitHub / open source', gsc:'Search Console', ia:'IA (geral)'};
 const INSTA = [
@@ -729,102 +724,6 @@ const INSTA = [
   {type:'oferta', tool:'ia', title:'Agentes de inteligência artificial', teaser:'Atende clientes, qualifica leads, faz follow-up e agenda reuniões.', price:'R$ 12.000 implantação + R$ 500/mês', src:'Matheus Hunoff (@matheushunoff)', link:'https://instagram.com/reels/Dey2BUBvzDk'}
 ];
 
-(function(){
-  const id = 'insta-1';
-  const searchText = ('Guia de Instagram prompts dicas ferramentas '+INSTA.map(i=>i.title+' '+i.teaser+' '+(i.prompt||'')).join(' ')).toLowerCase();
-
-  const idx = document.createElement('button');
-  idx.className = 'idx-card';
-  idx.style.animationDelay = nextDelay();
-  idx.dataset.part = 'insta';
-  idx.dataset.searchtext = searchText;
-  idx.innerHTML = `<span class="num">INSTA</span><span class="nm">Guia de Instagram</span><span class="ct">${INSTA.length} dicas</span>`;
-  idx.addEventListener('click', ()=>{
-    const sec = document.getElementById(id);
-    sec.open = true;
-    sec.scrollIntoView({behavior:'smooth', block:'start'});
-  });
-  indexGrid.appendChild(idx);
-
-  const details = document.createElement('details');
-  details.id = id;
-  details.className = 'cat';
-  details.dataset.part = 'insta';
-  details.dataset.searchtext = searchText;
-
-  const types = [...new Set(INSTA.map(i=>i.type))];
-  const tools = [...new Set(INSTA.map(i=>i.tool))];
-  const typeChips = ['<button class="insta-chip active" data-ifilter="type" data-val="all">Todos os tipos</button>']
-    .concat(types.map(t=>`<button class="insta-chip" data-ifilter="type" data-val="${t}">${TYPE_LABELS[t]}</button>`)).join('');
-  const toolChips = ['<button class="insta-chip active" data-ifilter="tool" data-val="all">Todas as ferramentas</button>']
-    .concat(tools.map(t=>`<button class="insta-chip" data-ifilter="tool" data-val="${t}">${TOOL_LABELS[t]}</button>`)).join('');
-
-  details.innerHTML = `
-    <summary class="cat-head">
-      <div class="cat-head-left">
-        <span class="cat-badge">IG</span>
-        <h3>Guia de Instagram</h3>
-      </div>
-      <div style="display:flex;align-items:center;gap:10px;">
-        <span class="cat-count">${INSTA.length}</span>
-        <svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m6 9 6 6 6-6"/></svg>
-      </div>
-    </summary>
-    <div class="cat-body">
-      <div class="insta-filters">
-        <div class="insta-filter-group"><span class="lbl">Tipo</span><div class="insta-chips" data-chipgroup="type">${typeChips}</div></div>
-        <div class="insta-filter-group"><span class="lbl">Ferramenta / IA</span><div class="insta-chips" data-chipgroup="tool">${toolChips}</div></div>
-      </div>
-      <div class="insta-grid" id="instaGrid"></div>
-      <div class="insta-empty" id="instaEmpty" hidden>Nenhuma dica nesse filtro.</div>
-    </div>`;
-
-  const grid = details.querySelector('#instaGrid');
-  INSTA.forEach(item=>{
-    const card = document.createElement('div');
-    card.className = 'insta-card';
-    card.dataset.itype = item.type;
-    card.dataset.itool = item.tool;
-    card.dataset.searchtext = (item.title+' '+item.teaser+' '+(item.prompt||'')+' '+(item.items||[]).join(' ')).toLowerCase();
-    const promptBlock = item.prompt ? `
-      <div class="insta-actions">
-        <button class="toggle-btn" type="button">Ver prompt</button>
-        <button class="primary copy-btn" type="button">Copiar prompt</button>
-      </div>
-      <div class="insta-prompt-wrap"><div class="insta-prompt"></div></div>` : '';
-    const listBlock = item.items ? `<ul class="ilist">${item.items.map(li=>`<li>${li}</li>`).join('')}</ul>` : '';
-    const priceBlock = item.price ? `<div class="price">${item.price}</div>` : '';
-    card.innerHTML = `
-      <div class="insta-tags"><span class="insta-tag type">${TYPE_LABELS[item.type]}</span><span class="insta-tag tool">${TOOL_LABELS[item.tool]}</span></div>
-      <h4>${item.title}</h4>
-      <div class="teaser">${item.teaser}</div>
-      ${priceBlock}${listBlock}${promptBlock}
-      <div class="src">fonte: ${item.src}${item.link?` · <a href="${item.link}" target="_blank" rel="noopener">abrir post</a>`:''}</div>`;
-    if(item.prompt){
-      card.querySelector('.insta-prompt').textContent = item.prompt;
-      card.querySelector('.toggle-btn').addEventListener('click', ()=>{
-        const open = card.classList.toggle('open');
-        card.querySelector('.toggle-btn').textContent = open ? 'Fechar prompt' : 'Ver prompt';
-      });
-      card.querySelector('.copy-btn').addEventListener('click', ()=>copyText(item.prompt, `Prompt "${item.title}" copiado`));
-    }
-    grid.appendChild(card);
-  });
-
-  details.querySelectorAll('.insta-chip').forEach(chip=>{
-    chip.addEventListener('click', ()=>{
-      const group = chip.closest('.insta-chips').dataset.chipgroup;
-      details.querySelectorAll(`.insta-chips[data-chipgroup="${group}"] .insta-chip`).forEach(c=>c.classList.remove('active'));
-      chip.classList.add('active');
-      if(group==='type'){ currentInstaType = chip.dataset.val; } else { currentInstaTool = chip.dataset.val; }
-      render();
-      const visible = grid.querySelectorAll('.insta-card:not([hidden])').length;
-      details.querySelector('#instaEmpty').hidden = visible>0;
-    });
-  });
-
-  sectionsEl.appendChild(details);
-})();
 
 // Skills para Claude Code — ferramentas de frontend/design que o agente usa direto
 const SKILLS = [
@@ -948,7 +847,7 @@ const SKILLS = [
   const idx = document.createElement('button');
   idx.className = 'idx-card';
   idx.style.animationDelay = nextDelay();
-  idx.dataset.part = 'skills';
+  idx.dataset.part = 'claude';
   idx.dataset.searchtext = searchText;
   idx.innerHTML = `<span class="num">SKILLS</span><span class="nm">Skills para Claude Code</span><span class="ct">${SKILLS.length} skills</span>`;
   idx.addEventListener('click', ()=>{
@@ -967,7 +866,7 @@ const SKILLS = [
   const details = document.createElement('details');
   details.id = id;
   details.className = 'cat';
-  details.dataset.part = 'skills';
+  details.dataset.part = 'claude';
   details.dataset.searchtext = searchText;
   details.innerHTML = `
     <summary class="cat-head">
@@ -1615,6 +1514,103 @@ Use sempre a imagem original como referência para cada geração.`}
 
   sectionsEl.appendChild(details);
 })();
+
+(function(){
+  const id = 'insta-1';
+  const searchText = ('Edição de Imagem — prompts de geração e edição de imagem '+INSTA.map(i=>i.title+' '+i.teaser+' '+(i.prompt||'')).join(' ')).toLowerCase();
+
+  const idx = document.createElement('button');
+  idx.className = 'idx-card';
+  idx.style.animationDelay = nextDelay();
+  idx.dataset.part = 'prof';
+  idx.dataset.searchtext = searchText;
+  idx.innerHTML = `<span class="num">IMG</span><span class="nm">Edição de Imagem</span><span class="ct">${INSTA.length} prompts</span>`;
+  idx.addEventListener('click', ()=>{
+    const sec = document.getElementById(id);
+    sec.open = true;
+    sec.scrollIntoView({behavior:'smooth', block:'start'});
+  });
+  indexGrid.appendChild(idx);
+
+  const details = document.createElement('details');
+  details.id = id;
+  details.className = 'cat';
+  details.dataset.part = 'prof';
+  details.dataset.searchtext = searchText;
+
+  const types = [...new Set(INSTA.map(i=>i.type))];
+  const tools = [...new Set(INSTA.map(i=>i.tool))];
+  const typeChips = ['<button class="insta-chip active" data-ifilter="type" data-val="all">Todos os tipos</button>']
+    .concat(types.map(t=>`<button class="insta-chip" data-ifilter="type" data-val="${t}">${TYPE_LABELS[t]}</button>`)).join('');
+  const toolChips = ['<button class="insta-chip active" data-ifilter="tool" data-val="all">Todas as ferramentas</button>']
+    .concat(tools.map(t=>`<button class="insta-chip" data-ifilter="tool" data-val="${t}">${TOOL_LABELS[t]}</button>`)).join('');
+
+  details.innerHTML = `
+    <summary class="cat-head">
+      <div class="cat-head-left">
+        <span class="cat-badge">IMG</span>
+        <h3>Edição de Imagem</h3>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <span class="cat-count">${INSTA.length}</span>
+        <svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m6 9 6 6 6-6"/></svg>
+      </div>
+    </summary>
+    <div class="cat-body">
+      <div class="insta-filters">
+        <div class="insta-filter-group"><span class="lbl">Tipo</span><div class="insta-chips" data-chipgroup="type">${typeChips}</div></div>
+        <div class="insta-filter-group"><span class="lbl">Ferramenta / IA</span><div class="insta-chips" data-chipgroup="tool">${toolChips}</div></div>
+      </div>
+      <div class="insta-grid" id="instaGrid"></div>
+      <div class="insta-empty" id="instaEmpty" hidden>Nenhuma dica nesse filtro.</div>
+    </div>`;
+
+  const grid = details.querySelector('#instaGrid');
+  INSTA.forEach(item=>{
+    const card = document.createElement('div');
+    card.className = 'insta-card';
+    card.dataset.itype = item.type;
+    card.dataset.itool = item.tool;
+    card.dataset.searchtext = (item.title+' '+item.teaser+' '+(item.prompt||'')+' '+(item.items||[]).join(' ')).toLowerCase();
+    const promptBlock = item.prompt ? `
+      <div class="insta-actions">
+        <button class="toggle-btn" type="button">Ver prompt</button>
+        <button class="primary copy-btn" type="button">Copiar prompt</button>
+      </div>
+      <div class="insta-prompt-wrap"><div class="insta-prompt"></div></div>` : '';
+    const listBlock = item.items ? `<ul class="ilist">${item.items.map(li=>`<li>${li}</li>`).join('')}</ul>` : '';
+    const priceBlock = item.price ? `<div class="price">${item.price}</div>` : '';
+    card.innerHTML = `
+      <div class="insta-tags"><span class="insta-tag type">${TYPE_LABELS[item.type]}</span><span class="insta-tag tool">${TOOL_LABELS[item.tool]}</span></div>
+      <h4>${item.title}</h4>
+      <div class="teaser">${item.teaser}</div>
+      ${priceBlock}${listBlock}${promptBlock}`;
+    if(item.prompt){
+      card.querySelector('.insta-prompt').textContent = item.prompt;
+      card.querySelector('.toggle-btn').addEventListener('click', ()=>{
+        const open = card.classList.toggle('open');
+        card.querySelector('.toggle-btn').textContent = open ? 'Fechar prompt' : 'Ver prompt';
+      });
+      card.querySelector('.copy-btn').addEventListener('click', ()=>copyText(item.prompt, `Prompt "${item.title}" copiado`));
+    }
+    grid.appendChild(card);
+  });
+
+  details.querySelectorAll('.insta-chip').forEach(chip=>{
+    chip.addEventListener('click', ()=>{
+      const group = chip.closest('.insta-chips').dataset.chipgroup;
+      details.querySelectorAll(`.insta-chips[data-chipgroup="${group}"] .insta-chip`).forEach(c=>c.classList.remove('active'));
+      chip.classList.add('active');
+      if(group==='type'){ currentInstaType = chip.dataset.val; } else { currentInstaTool = chip.dataset.val; }
+      render();
+      const visible = grid.querySelectorAll('.insta-card:not([hidden])').length;
+      details.querySelector('#instaEmpty').hidden = visible>0;
+    });
+  });
+
+  sectionsEl.appendChild(details);
+})();
+
 
 function copyText(text, label){
   const show = ()=>{
