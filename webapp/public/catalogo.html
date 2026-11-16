@@ -15,7 +15,11 @@
   --border:#e2d9ee; --purple:#4f1964; --purple-ink:#ffffff; --brand-purple:#4f1964;
   --yellow:#ffb600; --yellow-fill:#fedb00; --yellow-ink:#1a0b22;
   --accent-soft:#f1e6ff; --chip:#ece2fb; --shadow: 0 1px 2px rgba(30,10,50,.07), 0 8px 24px -12px rgba(30,10,50,.22);
+  --ease: cubic-bezier(.22,1,.36,1);
   color-scheme: light;
+}
+@media (prefers-reduced-motion: reduce){
+  *, *::before, *::after{animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important; scroll-behavior:auto !important;}
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
@@ -88,8 +92,8 @@ h1.title em{font-style:normal; color:var(--yellow);}
 .index-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(210px,1fr)); gap:10px; margin-bottom:8px;}
 .idx-card{
   text-align:left; border:1px solid var(--border); background:var(--surface); border-radius:12px; padding:12px 14px;
-  cursor:pointer; font:inherit; color:var(--fg); display:flex; flex-direction:column; gap:4px; transition:transform .12s, box-shadow .12s, border-color .12s;
-  animation:fadeInUp .4s ease backwards;
+  cursor:pointer; font:inherit; color:var(--fg); display:flex; flex-direction:column; gap:4px; transition:transform .2s var(--ease), box-shadow .2s var(--ease), border-color .2s var(--ease);
+  animation:fadeInUp .4s var(--ease) backwards;
 }
 .idx-card:hover{box-shadow:var(--shadow); transform:translateY(-3px) scale(1.015); border-color:var(--purple);}
 .idx-card .num{font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--purple); font-weight:700;}
@@ -112,9 +116,10 @@ section.cat[hidden]{display:none;}
 .cat-head h3{font-family:'Baloo 2',sans-serif; font-size:17px; font-weight:800; letter-spacing:-.01em;}
 .claude-tag{font-size:10.5px; font-weight:800; letter-spacing:.06em; text-transform:uppercase; color:var(--yellow-ink); background:var(--yellow); border-radius:5px; padding:2px 7px; flex:none;}
 .gemini-tag{font-size:10.5px; font-weight:800; letter-spacing:.06em; text-transform:uppercase; color:#fff; background:linear-gradient(100deg,#ff5c5c,#a259ff 50%,#3b82f6); border-radius:5px; padding:2px 7px; flex:none;}
+.img-tag{font-size:10.5px; font-weight:700; letter-spacing:.02em; color:var(--muted); background:var(--chip); border-radius:5px; padding:2px 7px; flex:none; display:inline-flex; align-items:center; gap:4px; white-space:nowrap;}
 .cat-badge.gemini{background:linear-gradient(135deg,#ff5c5c,#a259ff 50%,#3b82f6); color:#fff;}
 .cat-count{font-size:12px; color:var(--muted); font-weight:600; flex:none;}
-.chev{transition:transform .18s; flex:none; opacity:.6;}
+.chev{transition:transform .22s var(--ease); flex:none; opacity:.6;}
 section.cat[open] .chev{transform:rotate(180deg);}
 .cat-body{padding:4px 16px 18px;}
 .cmd-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:9px;}
@@ -160,7 +165,7 @@ mark{background:var(--purple); color:var(--purple-ink); border-radius:3px; paddi
   padding:6px 11px; border-radius:8px; cursor:pointer; white-space:nowrap;
 }
 .motion-actions button.primary{border-color:var(--purple); color:var(--purple-ink); background:var(--purple);}
-.motion-prompt-wrap{max-height:0; overflow:hidden; transition:max-height .25s ease;}
+.motion-prompt-wrap{max-height:0; overflow:hidden; transition:max-height .3s var(--ease);}
 .motion-card.open .motion-prompt-wrap{max-height:900px;}
 .motion-prompt{
   font-family:'JetBrains Mono',monospace; font-size:12px; line-height:1.6; white-space:pre-wrap; color:var(--fg);
@@ -219,7 +224,7 @@ mark{background:var(--purple); color:var(--purple-ink); border-radius:3px; paddi
   padding:5px 10px; border-radius:7px; cursor:pointer;
 }
 .insta-card .insta-actions button.primary{border-color:var(--purple); background:var(--purple); color:var(--purple-ink);}
-.insta-card .insta-prompt-wrap{max-height:0; overflow:hidden; transition:max-height .25s ease;}
+.insta-card .insta-prompt-wrap{max-height:0; overflow:hidden; transition:max-height .3s var(--ease);}
 .insta-card.open .insta-prompt-wrap{max-height:500px;}
 .insta-card .insta-prompt{
   font-family:'JetBrains Mono',monospace; font-size:11px; line-height:1.55; white-space:pre-wrap; color:var(--fg);
@@ -284,7 +289,7 @@ mark{background:var(--purple); color:var(--purple-ink); border-radius:3px; paddi
         <button data-part="gemini">Gemini · 4</button>
         <button data-part="motion">Motions · 5</button>
         <button data-part="insta">Instagram · 30</button>
-        <button data-part="skills">Skills · 95</button>
+        <button data-part="skills">Skills · 102</button>
         <button data-part="prof">Prompts Pro · 6</button>
       </div>
       <button class="theme-btn" id="themeBtn" type="button">🌓 Tema</button>
@@ -299,7 +304,7 @@ mark{background:var(--purple); color:var(--purple-ink); border-radius:3px; paddi
   <div class="empty-state" id="emptyState" hidden><b>Nada encontrado</b>Tenta outra palavra — por exemplo "vídeo", "marca" ou "retrato".</div>
 
   <div class="footer">
-    <span>1021 comandos + 5 motions + 30 dicas de Instagram + 95 skills + 6 prompts pro · 52 categorias</span>
+    <span>1021 comandos + 5 motions + 30 dicas de Instagram + 102 skills + 6 prompts pro · 52 categorias</span>
     <div class="logo-mark">
       <img src="examples/hasta-icon.png" width="16" height="16" alt="">
       <span>Guia de Comandos Secretos — @hasta.mkt</span>
@@ -425,7 +430,7 @@ document.getElementById('statPills').innerHTML = `
   <div class="stat-pill"><span class="dot"></span>Gemini <b data-count="${totalGemini}">0</b></div>
   <div class="stat-pill"><span class="dot"></span>Motions <b data-count="${MOTIONS.length}">0</b></div>
   <div class="stat-pill"><span class="dot"></span>Instagram <b data-count="30">0</b></div>
-  <div class="stat-pill"><span class="dot"></span>Skills <b data-count="95">0</b></div>
+  <div class="stat-pill"><span class="dot"></span>Skills <b data-count="102">0</b></div>
   <div class="stat-pill"><span class="dot"></span>Prompts Pro <b data-count="6">0</b></div>
   <div class="stat-pill">Categorias <b data-count="${DATA.length+4}">0</b></div>`;
 document.querySelectorAll('.stat-pill b[data-count]').forEach(el=>{
@@ -498,6 +503,7 @@ DATA.forEach(([part,num,title,items])=>{
         <h3>${title}</h3>
         ${part==='claude'?'<span class="claude-tag">Claude</span>':''}
         ${part==='gemini'?'<span class="gemini-tag">Gemini</span>':''}
+        ${part==='chatgpt'&&num>=12&&num<=46?'<span class="img-tag">📎 precisa de imagem</span>':''}
       </div>
       <div style="display:flex;align-items:center;gap:10px;">
         <span class="cat-count">${items.length}</span>
@@ -805,8 +811,15 @@ const SKILLS = [
 
   {type:'Design e animação', title:'Figma', tagline:'Parceiro de design', desc:'O Claude lê e edita seus arquivos reais do Figma.'},
   {type:'Design e animação', title:'ui-ux-pro-max', tagline:'Líder de UX', desc:'Espaçamento, hierarquia e estados de verdade.'},
-  {type:'Design e animação', title:'impeccable', tagline:'Guardião do estilo', desc:'Uma linguagem visual só em modo do projeto.'},
-  {type:'Design e animação', title:'taste-skill', tagline:'Curador de gosto', desc:'Acaba com resultado genérico e repetido.'},
+  {type:'Design e animação', title:'frontend-design', tagline:'Layout ousado', desc:'Força layouts ousados.'},
+  {type:'Design e animação', title:'impeccable', tagline:'Guardião do estilo', desc:'Cor OKLCH rígida e grid de 4px.'},
+  {type:'Design e animação', title:'taste-skill', tagline:'Curador de gosto', desc:'Olhar estético de alto nível.'},
+  {type:'Design e animação', title:'animate', tagline:'Microinterações', desc:'Microtransições e curvas.'},
+  {type:'Design e animação', title:'design-motion', tagline:'Revisor de movimento', desc:'Revisa o movimento em 3 lentes.'},
+  {type:'Design e animação', title:'theme-factory', tagline:'Gerador de paleta', desc:'Gera paletas de cor sozinho.'},
+  {type:'Design e animação', title:'figma-implement', tagline:'Do design ao código', desc:'Do design pro código, fiel.'},
+  {type:'Design e animação', title:'brandkit', tagline:'Identidade visual', desc:'Identidade visual numa página.'},
+  {type:'Design e animação', title:'designer-skills', tagline:'Specs pro dev', desc:'Especificação pronta pro dev.'},
   {type:'Design e animação', title:'emil-design-eng', tagline:'Designer de detalhes', desc:'Os detalhes que deixam a interface acabada.'},
   {type:'Design e animação', title:'HyperFrames', tagline:'Animador', desc:'Escreve HTML e renderiza vídeo, feito pra agentes.'},
   {type:'Design e animação', title:'Remotion', tagline:'Engenheiro de vídeo', desc:'Cria vídeo a partir de código React.'},
