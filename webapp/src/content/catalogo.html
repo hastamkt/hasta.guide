@@ -266,11 +266,56 @@ mark{background:var(--purple); color:var(--purple-ink); border-radius:3px; paddi
 .howto{background:var(--surface); border:1px solid var(--border); border-left:4px solid var(--purple); border-radius:10px; padding:16px 20px; margin-bottom:24px; font-size:13.5px; color:var(--muted); line-height:1.6;}
 .howto b{color:var(--fg);}
 .howto code{color:var(--yellow-ink); background:var(--yellow-fill); font-weight:600; padding:0 4px; border-radius:3px;}
+
+/* menu lateral em árvore */
+.app-shell{display:flex; align-items:flex-start;}
+.app-shell > .wrap{flex:1; min-width:0;}
+#sideNav{
+  width:232px; flex:none; position:sticky; top:0; max-height:100vh; overflow-y:auto;
+  padding:20px 14px 40px; border-right:1px solid var(--border); background:var(--surface);
+}
+.sidenav-head{display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); font-weight:700;}
+#sideNavClose{display:none; border:none; background:transparent; color:var(--muted); font-size:16px; line-height:1; cursor:pointer;}
+.sidenav-top{display:block; width:100%; text-align:left; border:none; background:transparent; font:inherit; font-weight:800; font-size:13px; color:var(--fg); padding:8px 6px; border-radius:8px; cursor:pointer; margin-top:4px;}
+.sidenav-top:hover, .sidenav-top.active{background:var(--accent-soft); color:var(--purple);}
+.sidenav-fav{color:var(--yellow-ink); background:var(--yellow-fill); margin-bottom:8px;}
+.sidenav-fav:hover, .sidenav-fav.active{background:var(--yellow); color:var(--yellow-ink);}
+.sidenav-group{font-size:10.5px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); font-weight:700; margin:10px 0 2px 14px;}
+.sidenav-leaf{display:block; width:100%; text-align:left; border:none; background:transparent; font:inherit; font-size:12.5px; color:var(--muted); padding:5px 6px 5px 18px; border-radius:7px; cursor:pointer;}
+.sidenav-leaf:hover{background:var(--accent-soft); color:var(--purple);}
+#sideNavToggle{display:none; position:fixed; top:12px; left:12px; z-index:70; border:1px solid var(--border); background:var(--surface); color:var(--fg); font:inherit; font-weight:700; font-size:13px; padding:8px 14px; border-radius:999px; box-shadow:var(--shadow); cursor:pointer;}
+#sideNavScrim{display:none; position:fixed; inset:0; background:rgba(0,0,0,.4); z-index:55;}
+#sideNavScrim.show{display:block;}
+@media (max-width: 900px){
+  #sideNavToggle{display:inline-flex; align-items:center; gap:6px;}
+  .app-shell{display:block;}
+  #sideNav{
+    position:fixed; top:0; left:0; height:100vh; width:260px; max-width:82vw; z-index:60;
+    transform:translateX(-100%); transition:transform .25s var(--ease); box-shadow:var(--shadow);
+    padding-top:max(20px, env(safe-area-inset-top,0px));
+  }
+  #sideNav.open{transform:translateX(0);}
+  #sideNavClose{display:inline-flex;}
+}
+
+/* estrela de favorito */
+.fav-star{cursor:pointer; font-size:16px; line-height:1; color:var(--muted); flex:none; user-select:none; transition:color .15s, transform .15s;}
+.fav-star:hover{transform:scale(1.15);}
+.fav-star.fav-active{color:var(--yellow);}
+.cmd-card .fav-star{position:absolute; top:8px; right:8px; z-index:2;}
+.insta-title-row{display:flex; align-items:flex-start; justify-content:space-between; gap:8px;}
 </style>
 </head>
 <body>
 
-<div class="wrap">
+<button id="sideNavToggle" type="button">☰ Menu</button>
+<div id="sideNavScrim"></div>
+<div class="app-shell">
+  <aside id="sideNav">
+    <div class="sidenav-head"><span>Navegação</span><button id="sideNavClose" type="button" aria-label="Fechar menu">✕</button></div>
+    <nav id="sideNavTree"></nav>
+  </aside>
+  <div class="wrap">
   <header class="top">
     <div>
       <div class="logo-mark">
@@ -285,7 +330,7 @@ mark{background:var(--purple); color:var(--purple-ink); border-radius:3px; paddi
   </header>
 
   <div class="howto">
-    <b>Como usar:</b> digite a barra (<code>/</code>) seguida do comando, antes ou depois da sua pergunta, no chat da IA. Clique num comando abaixo para copiá-lo. As categorias 12–46 são efeitos visuais — exigem uma imagem anexada junto do comando. As categorias Claude e Gemini podem não funcionar fora da respectiva IA. Combine comandos, por exemplo <code>/brainstorm + /concise</code>. Dentro de <b>Claude</b> ficam também os <b>Motions</b> (clique em "Ver prompt" pra abrir o template e em "Copiar prompt" pra levar o texto já com a identidade Hasta embutida) e as <b>Skills</b>. Em <b>Prompts Pro</b> ficam os mega-prompts de fotografia e vídeo profissional (produto, retrato, VFX e anúncio em vídeo — cole o texto inteiro como instrução inicial da conversa, antes de anexar suas imagens) e os prompts de <b>Edição de Imagem</b>, com filtro por tipo e por ferramenta/IA.
+    <b>Como usar:</b> digite a barra (<code>/</code>) seguida do comando, antes ou depois da sua pergunta, no chat da IA. Clique num comando abaixo para copiá-lo. As categorias 12–46 são efeitos visuais — exigem uma imagem anexada junto do comando. As categorias Claude e Gemini podem não funcionar fora da respectiva IA. Combine comandos, por exemplo <code>/brainstorm + /concise</code>. Dentro de <b>Claude</b> ficam também os <b>Motions</b> (clique em "Ver prompt" pra abrir o template e em "Copiar prompt" pra levar o texto já com a identidade Hasta embutida), as <b>Skills</b> e os <b>MCPs (Conectores)</b> — com a ferramenta/IA em que cada um funciona. Em <b>Prompts Pro</b> ficam os mega-prompts de fotografia e vídeo profissional (produto, retrato, VFX e anúncio em vídeo — cole o texto inteiro como instrução inicial da conversa, antes de anexar suas imagens) e os prompts de <b>Edição de Imagem</b>, com filtro por tipo e por ferramenta/IA. Use o <b>menu lateral (☰)</b> pra trocar de categoria rápido e a <b>estrela</b> ☆ de cada card pra favoritar — seus favoritos ficam em "⭐ Favoritos", logado.
   </div>
 
   <div class="controls">
@@ -313,11 +358,12 @@ mark{background:var(--purple); color:var(--purple-ink); border-radius:3px; paddi
   <div class="empty-state" id="emptyState" hidden><b>Nada encontrado</b>Tenta outra palavra — por exemplo "vídeo", "marca" ou "retrato".</div>
 
   <div class="footer">
-    <span>1021 comandos + 116 recursos Claude (comandos, skills e motions) + 36 prompts de edição de imagem e foto pro · 52 categorias</span>
+    <span>1021 comandos + 116 recursos Claude (comandos, skills, motions e MCPs) + 36 prompts de edição de imagem e foto pro · 53 categorias</span>
     <div class="logo-mark">
       <img src="examples/hasta-icon.png" width="16" height="16" alt="">
       <span>Guia de Comandos Secretos — @hasta.mkt</span>
     </div>
+  </div>
   </div>
 </div>
 
@@ -430,7 +476,7 @@ const MOTION_TIPS = [
 const sectionsEl = document.getElementById('sections');
 const indexGrid = document.getElementById('indexGrid');
 const totalChatGPT = DATA.filter(d=>d[0]==='chatgpt').reduce((a,d)=>a+d[3].length,0);
-const totalClaude = DATA.filter(d=>d[0]==='claude').reduce((a,d)=>a+d[3].length,0) + MOTIONS.length + 102; // +5 motions +102 skills, agora tudo dentro de Claude
+const totalClaude = DATA.filter(d=>d[0]==='claude').reduce((a,d)=>a+d[3].length,0) + MOTIONS.length + 97 + 5; // +5 motions +97 skills +5 MCPs, tudo dentro de Claude (skills e MCPs classificados em seções visuais separadas)
 const totalGemini = DATA.filter(d=>d[0]==='gemini').reduce((a,d)=>a+d[3].length,0);
 const totalProf = 6 + 30; // 6 prompts pro + 30 prompts de edição de imagem (ex-Instagram), agora tudo dentro de Prompts Pro
 
@@ -439,7 +485,7 @@ document.getElementById('statPills').innerHTML = `
   <div class="stat-pill"><span class="dot"></span>Claude <b data-count="${totalClaude}">0</b></div>
   <div class="stat-pill"><span class="dot"></span>Gemini <b data-count="${totalGemini}">0</b></div>
   <div class="stat-pill"><span class="dot"></span>Prompts Pro <b data-count="${totalProf}">0</b></div>
-  <div class="stat-pill">Categorias <b data-count="${DATA.length+4}">0</b></div>`;
+  <div class="stat-pill">Categorias <b data-count="${DATA.length+5}">0</b></div>`;
 document.querySelectorAll('.stat-pill b[data-count]').forEach(el=>{
   const target = parseInt(el.dataset.count,10);
   const dur = 700, start = performance.now();
@@ -477,7 +523,8 @@ const CMD_THUMBS = {"11-35mm":"examples/cat11-35mm.png","11-360view":"examples/c
 let __idxDelay = 0;
 function nextDelay(){ const d = __idxDelay; __idxDelay += 18; return Math.min(d,500)+'ms'; }
 
-const ACCESS = window.__ACCESS__ || { paid: false, free: [], loggedIn: false };
+const ACCESS = window.__ACCESS__ || { paid: false, free: [], loggedIn: false, favorites: [] };
+const favSet = new Set(ACCESS.favorites || []);
 DATA.forEach(([part,num,title,items])=>{
   const id = slug(part,num);
   const isFree = ACCESS.free.includes(part+'-'+num);
@@ -516,9 +563,12 @@ DATA.forEach(([part,num,title,items])=>{
       const card = document.createElement('button');
       card.className = 'cmd-card';
       card.dataset.searchtext = (cmd+' '+desc).toLowerCase();
+      const commandId = part+'-'+num+'-'+cmd;
+      card.dataset.commandId = commandId;
       const thumb = CMD_THUMBS[num+"-"+cmd];
       card.innerHTML = (thumb?`<img class="cmd-thumb" src="${thumb}" alt="" loading="lazy">`:"") + `<span class="cmd">/${cmd}<svg class="copy-ic" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1"/></svg></span><span class="desc">${desc}</span>`;
       card.addEventListener('click', ()=>copyCmd(cmd));
+      addFavStar(card, commandId);
       grid.appendChild(card);
     });
   }
@@ -651,6 +701,8 @@ let motionSubHeadEl; // preenchido pela IIFE de Motions logo abaixo; Skills se a
   MOTIONS.forEach((m,i)=>{
     const card = document.createElement('div');
     card.className = 'motion-card';
+    const commandId = 'motion-'+m.title;
+    card.dataset.commandId = commandId;
     card.dataset.searchtext = (m.title+' '+m.teaser).toLowerCase();
     card.innerHTML = `
       <div class="motion-visuals">
@@ -676,6 +728,7 @@ let motionSubHeadEl; // preenchido pela IIFE de Motions logo abaixo; Skills se a
       card.querySelector('.toggle-btn').textContent = open ? 'Fechar prompt' : 'Ver prompt';
     });
     card.querySelector('.copy-btn').addEventListener('click', ()=>copyText(m.prompt, `Prompt "${m.title}" copiado`));
+    addFavStar(card.querySelector('.motion-actions'), commandId, {prepend:true});
     grid.appendChild(card);
   });
   details.querySelector('#motionTips').innerHTML = MOTION_TIPS.map(t=>`<li>${t}</li>`).join('');
@@ -774,12 +827,6 @@ const SKILLS = [
   {type:'Skill de animação', title:'Manim Skill', tagline:'Animações de matemática no estilo 3Blue1Brown.', desc:'Animações de matemática no estilo 3Blue1Brown.'},
   {type:'Skill de animação', title:'JavaScript Animation Skills', tagline:'Desenha tudo em código até a trilha sonora.', desc:'Desenha tudo em código até a trilha sonora.'},
   {type:'Skill de animação', title:'Huashu Art Motion', tagline:'Transforma pinturas em arte que se mexe.', desc:'Transforma pinturas em arte que se mexe.'},
-
-  {type:'MCP grátis', title:'Playwright MCP', tagline:'O Claude controla seu navegador de verdade.', desc:'Ele clica em botões, preenche formulários e extrai dados de qualquer página.'},
-  {type:'MCP grátis', title:'Context7', tagline:'Busca documentações atualizadas direto na conversa.', desc:'Evita que o Claude invente códigos desatualizados.'},
-  {type:'MCP grátis', title:'Sequential Thinking', tagline:'Desenvolvido pela Anthropic.', desc:'O Claude para de adivinhar, planeja cada etapa e corrige seus próprios erros antes mesmo de mexer em qualquer código.'},
-  {type:'MCP grátis', title:'Codex Plugin', tagline:'Integra o Codex, da OpenAI, direto ao Claude.', desc:'Dois modelos de inteligência artificial de empresas diferentes analisam e verificam o trabalho um do outro.'},
-  {type:'MCP grátis', title:'Memory MCP', tagline:'Também desenvolvido pela Anthropic.', desc:'O Claude ganha uma memória que permite lembrar de você entre diferentes conversas.'},
 
   {type:'Skill de produto e campanha', title:'Character Sheet Studio', tagline:'Monta o character sheet de uma pessoa real preservando o rosto.', desc:'Pede foto de rosto de frente e de perfil mais fotos de corpo, gera só os dois corpos sem cabeça com a IA e compõe o board final sem retocar nem reconstruir o rosto original.'},
   {type:'Skill de produto e campanha', title:'Product Sheet Studio', tagline:'Monta a prancha de referência do produto, sem gerar nenhuma imagem.', desc:'Reúne fotos já existentes do produto, de arquivo ou de uma página oficial, e organiza vistas e detalhes numa prancha, mantendo os originais intactos.'},
@@ -885,13 +932,84 @@ const SKILLS = [
   SKILLS.forEach(s=>{
     const card = document.createElement('div');
     card.className = 'insta-card';
+    const commandId = 'skill-'+s.title;
+    card.dataset.commandId = commandId;
     card.dataset.searchtext = (s.title+' '+s.tagline+' '+s.desc).toLowerCase();
     card.innerHTML = `
       <div class="insta-tags"><span class="insta-tag type">${s.type||'Skill de design'}</span><span class="insta-tag tool">Claude Code</span></div>
-      <h4>${s.title}</h4>
+      <div class="insta-title-row"><h4>${s.title}</h4></div>
       <div class="tagline">${s.tagline}</div>
       ${s.stat?`<div class="stat-badge">${s.stat}</div>`:''}
       <div class="teaser">${s.desc}</div>`;
+    addFavStar(card.querySelector('.insta-title-row'), commandId);
+    grid.appendChild(card);
+  });
+
+  sectionsEl.appendChild(details);
+})();
+
+// MCPs (Conectores) — protocolo aberto; cada um funciona num conjunto diferente de clientes de IA
+const MCPS = [
+  {title:'Playwright MCP', tagline:'O Claude controla seu navegador de verdade.', desc:'Ele clica em botões, preenche formulários e extrai dados de qualquer página.', tools:'Claude Code, Claude Desktop, Cursor, Windsurf, VS Code (GitHub Copilot)'},
+  {title:'Context7', tagline:'Busca documentações atualizadas direto na conversa.', desc:'Evita que o Claude invente códigos desatualizados.', tools:'Claude Code, Claude Desktop, Cursor, Windsurf, VS Code (GitHub Copilot)'},
+  {title:'Sequential Thinking', tagline:'Desenvolvido pela Anthropic.', desc:'O Claude para de adivinhar, planeja cada etapa e corrige seus próprios erros antes mesmo de mexer em qualquer código.', tools:'Claude Code, Claude Desktop, Cursor, Windsurf'},
+  {title:'Codex Plugin', tagline:'Integra o Codex, da OpenAI, direto ao Claude.', desc:'Dois modelos de inteligência artificial de empresas diferentes analisam e verificam o trabalho um do outro.', tools:'Claude Code (integração específica com o Codex da OpenAI)'},
+  {title:'Memory MCP', tagline:'Também desenvolvido pela Anthropic.', desc:'O Claude ganha uma memória que permite lembrar de você entre diferentes conversas.', tools:'Claude Code, Claude Desktop, Cursor, Windsurf'}
+];
+
+(function(){
+  const id = 'mcps-1';
+  const searchText = ('MCPs Conectores '+MCPS.map(m=>m.title+' '+m.tagline+' '+m.desc+' '+m.tools).join(' ')).toLowerCase();
+
+  const idx = document.createElement('button');
+  idx.className = 'idx-card';
+  idx.style.animationDelay = nextDelay();
+  idx.dataset.part = 'claude';
+  idx.dataset.searchtext = searchText;
+  idx.innerHTML = `<span class="num">MCP</span><span class="nm">MCPs (Conectores)</span><span class="ct">${MCPS.length} conectores</span>`;
+  idx.addEventListener('click', ()=>{
+    const sec = document.getElementById(id);
+    sec.open = true;
+    sec.scrollIntoView({behavior:'smooth', block:'start'});
+  });
+  // Nasce dentro de "Comandos por IA específica" — ordem final: Claude → Skills → Motions → MCPs → Gemini.
+  const mcpsSubHead = document.createElement('div');
+  mcpsSubHead.className = 'index-subhead';
+  mcpsSubHead.textContent = 'MCPs (Conectores)';
+  indexGrid.insertBefore(mcpsSubHead, subHeadEls['Gemini']);
+  indexGrid.insertBefore(idx, subHeadEls['Gemini']);
+
+  const details = document.createElement('details');
+  details.id = id;
+  details.className = 'cat';
+  details.dataset.part = 'claude';
+  details.dataset.searchtext = searchText;
+  details.innerHTML = `
+    <summary class="cat-head">
+      <div class="cat-head-left">
+        <span class="cat-badge" style="font-size:9px;">MCP</span>
+        <h3>MCPs (Conectores)</h3>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <span class="cat-count">${MCPS.length}</span>
+        <svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m6 9 6 6 6-6"/></svg>
+      </div>
+    </summary>
+    <div class="cat-body"><div class="insta-grid" id="mcpsGrid"></div></div>`;
+
+  const grid = details.querySelector('#mcpsGrid');
+  MCPS.forEach(m=>{
+    const commandId = 'mcp-'+m.title;
+    const card = document.createElement('div');
+    card.className = 'insta-card';
+    card.dataset.commandId = commandId;
+    card.dataset.searchtext = (m.title+' '+m.tagline+' '+m.desc+' '+m.tools).toLowerCase();
+    card.innerHTML = `
+      <div class="insta-title-row"><h4>${m.title}</h4></div>
+      <div class="tagline">${m.tagline}</div>
+      <div class="teaser">${m.desc}</div>
+      <div class="stat-badge">Funciona em: ${m.tools}</div>`;
+    addFavStar(card.querySelector('.insta-title-row'), commandId);
     grid.appendChild(card);
   });
 
@@ -1487,6 +1605,8 @@ Use sempre a imagem original como referência para cada geração.`}
   PROFPROMPTS.forEach((p,i)=>{
     const card = document.createElement('div');
     card.className = 'motion-card';
+    const commandId = 'prof-'+p.title;
+    card.dataset.commandId = commandId;
     card.dataset.searchtext = (p.title+' '+p.teaser).toLowerCase();
     card.innerHTML = `
       <div class="motion-card-head">
@@ -1509,6 +1629,7 @@ Use sempre a imagem original como referência para cada geração.`}
       card.querySelector('.toggle-btn').textContent = open ? 'Fechar prompt' : 'Ver prompt';
     });
     card.querySelector('.copy-btn').addEventListener('click', ()=>copyText(p.prompt, `Prompt "${p.title}" copiado`));
+    addFavStar(card.querySelector('.motion-actions'), commandId, {prepend:true});
     grid.appendChild(card);
   });
 
@@ -1569,6 +1690,8 @@ Use sempre a imagem original como referência para cada geração.`}
   INSTA.forEach(item=>{
     const card = document.createElement('div');
     card.className = 'insta-card';
+    const commandId = 'img-'+item.title;
+    card.dataset.commandId = commandId;
     card.dataset.itype = item.type;
     card.dataset.itool = item.tool;
     card.dataset.searchtext = (item.title+' '+item.teaser+' '+(item.prompt||'')+' '+(item.items||[]).join(' ')).toLowerCase();
@@ -1582,9 +1705,10 @@ Use sempre a imagem original como referência para cada geração.`}
     const priceBlock = item.price ? `<div class="price">${item.price}</div>` : '';
     card.innerHTML = `
       <div class="insta-tags"><span class="insta-tag type">${TYPE_LABELS[item.type]}</span><span class="insta-tag tool">${TOOL_LABELS[item.tool]}</span></div>
-      <h4>${item.title}</h4>
+      <div class="insta-title-row"><h4>${item.title}</h4></div>
       <div class="teaser">${item.teaser}</div>
       ${priceBlock}${listBlock}${promptBlock}`;
+    addFavStar(card.querySelector('.insta-title-row'), commandId);
     if(item.prompt){
       card.querySelector('.insta-prompt').textContent = item.prompt;
       card.querySelector('.toggle-btn').addEventListener('click', ()=>{
@@ -1612,19 +1736,51 @@ Use sempre a imagem original como referência para cada geração.`}
 })();
 
 
+function showToast(label){
+  const t = document.getElementById('toast');
+  t.textContent = label;
+  t.classList.add('show');
+  clearTimeout(window.__toastT);
+  window.__toastT = setTimeout(()=>t.classList.remove('show'), 1500);
+}
 function copyText(text, label){
-  const show = ()=>{
-    const t = document.getElementById('toast');
-    t.textContent = label;
-    t.classList.add('show');
-    clearTimeout(window.__toastT);
-    window.__toastT = setTimeout(()=>t.classList.remove('show'), 1500);
-  };
+  const show = ()=>showToast(label);
   if(navigator.clipboard && navigator.clipboard.writeText){
     navigator.clipboard.writeText(text).then(show).catch(()=>fallbackCopy(text,show));
   } else { fallbackCopy(text,show); }
 }
 function copyCmd(cmd){ copyText('/'+cmd, `Copiado: /${cmd}`); }
+
+// Favoritos — estrela em cada card, sincronizada com /api/favorites (same-origin, cookie de sessão já vai junto)
+function renderStarState(star, commandId){
+  const active = favSet.has(commandId);
+  star.textContent = active ? '★' : '☆';
+  star.classList.toggle('fav-active', active);
+}
+function addFavStar(hostEl, commandId, opts){
+  opts = opts || {};
+  if(!hostEl) return null;
+  const star = document.createElement('span');
+  star.className = 'fav-star';
+  star.tabIndex = 0;
+  star.dataset.commandId = commandId;
+  renderStarState(star, commandId);
+  star.addEventListener('click', (ev)=>toggleFavorite(commandId, star, ev));
+  if(opts.prepend && hostEl.firstChild){ hostEl.insertBefore(star, hostEl.firstChild); } else { hostEl.appendChild(star); }
+  return star;
+}
+async function toggleFavorite(commandId, star, ev){
+  if(ev) ev.stopPropagation();
+  if(!ACCESS.loggedIn){ showToast('Faça login pra favoritar'); return; }
+  try{
+    const res = await fetch('/api/favorites', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({commandId})});
+    if(res.status===401){ showToast('Faça login pra favoritar'); return; }
+    const data = await res.json();
+    if(data.favorited){ favSet.add(commandId); } else { favSet.delete(commandId); }
+    renderStarState(star, commandId);
+    if(favoritesOnly) render();
+  } catch(e){ showToast('Não deu pra favoritar agora'); }
+}
 function fallbackCopy(text, cb){
   const ta = document.createElement('textarea');
   ta.value = text; ta.style.position='fixed'; ta.style.opacity='0';
@@ -1640,14 +1796,17 @@ const partButtons = document.querySelectorAll('#partSeg button');
 const resultCount = document.getElementById('resultCount');
 const emptyState = document.getElementById('emptyState');
 const indexLabel = document.getElementById('indexLabel');
+const defaultEmptyHtml = emptyState.innerHTML;
 let currentPart = 'all';
 let currentInstaType = 'all';
 let currentInstaTool = 'all';
+let favoritesOnly = false;
 
 partButtons.forEach(b=>b.addEventListener('click', ()=>{
   partButtons.forEach(x=>x.classList.remove('active'));
   b.classList.add('active');
   currentPart = b.dataset.part;
+  favoritesOnly = false;
   render();
 }));
 searchInput.addEventListener('input', render);
@@ -1681,7 +1840,7 @@ function render(){
   document.querySelectorAll('.idx-card').forEach(idx=>{
     const partOk = currentPart==='all' || idx.dataset.part===currentPart;
     const searchOk = !q || idx.dataset.searchtext.includes(q);
-    idx.hidden = !(partOk && searchOk);
+    idx.hidden = favoritesOnly || !(partOk && searchOk);
   });
   updateIndexGroupHeads();
 
@@ -1697,16 +1856,28 @@ function render(){
         if(currentInstaType!=='all' && card.dataset.itype!==currentInstaType) m = false;
         if(currentInstaTool!=='all' && card.dataset.itool!==currentInstaTool) m = false;
       }
+      if(m && favoritesOnly && !favSet.has(card.dataset.commandId)) m = false;
       card.hidden = !m;
       if(m){ catHasMatch = true; visibleCmds++; }
     });
     sec.hidden = !catHasMatch;
     if(catHasMatch){ visibleCats++; }
-    if(q && catHasMatch){ sec.open = true; } else if(!q){ /* leave as is */ }
+    if((q || favoritesOnly) && catHasMatch){ sec.open = true; } else if(!q && !favoritesOnly){ /* leave as is */ }
   });
 
-  emptyState.hidden = !(q && visibleCmds===0);
-  if(q){
+  if(favoritesOnly && visibleCmds===0){
+    emptyState.innerHTML = '<b>Nenhum favorito ainda</b>Clique na estrela ☆ de um comando pra favoritar.';
+    emptyState.hidden = false;
+  } else if(q && visibleCmds===0){
+    emptyState.innerHTML = defaultEmptyHtml;
+    emptyState.hidden = false;
+  } else {
+    emptyState.hidden = true;
+  }
+  if(favoritesOnly){
+    resultCount.textContent = `${visibleCmds} favorito${visibleCmds!==1?'s':''}`;
+    indexLabel.textContent = 'Favoritos';
+  } else if(q){
     resultCount.textContent = `${visibleCmds} item${visibleCmds!==1?'s':''} em ${visibleCats} categoria${visibleCats!==1?'s':''}`;
     indexLabel.textContent = 'Resultados';
   } else {
@@ -1714,7 +1885,19 @@ function render(){
     indexLabel.textContent = 'Índice — clique para abrir';
   }
 }
+function setFavoritesOnly(v){
+  favoritesOnly = v;
+  if(v){
+    partButtons.forEach(x=>x.classList.remove('active'));
+    document.querySelector('#partSeg button[data-part="all"]').classList.add('active');
+    document.querySelectorAll('.sidenav-top').forEach(x=>x.classList.remove('active'));
+    const favBtnEl = document.querySelector('.sidenav-fav');
+    if(favBtnEl) favBtnEl.classList.add('active');
+  }
+  render();
+}
 render();
+if(location.hash === '#favoritos') setFavoritesOnly(true);
 
 // theme toggle
 const themeBtn = document.getElementById('themeBtn');
@@ -1731,6 +1914,101 @@ themeBtn.addEventListener('click', ()=>{
   const next = cur === 'dark' ? 'light' : cur === 'light' ? 'dark' : (prefersDark ? 'light' : 'dark');
   applyTheme(next);
 });
+
+// menu lateral em árvore — reflete o indexGrid já montado, reusando o filtro .seg/currentPart
+const sideNav = document.getElementById('sideNav');
+const sideNavScrim = document.getElementById('sideNavScrim');
+function openSideNavMobile(){ sideNav.classList.add('open'); sideNavScrim.classList.add('show'); }
+function closeSideNavMobile(){ sideNav.classList.remove('open'); sideNavScrim.classList.remove('show'); }
+document.getElementById('sideNavToggle').addEventListener('click', openSideNavMobile);
+document.getElementById('sideNavClose').addEventListener('click', closeSideNavMobile);
+sideNavScrim.addEventListener('click', closeSideNavMobile);
+
+function buildSideNav(){
+  const PART_LABEL = {chatgpt:'ChatGPT', claude:'Claude', gemini:'Gemini', prof:'Prompts Pro'};
+  const PART_ORDER = ['chatgpt','claude','gemini','prof'];
+  const tree = document.getElementById('sideNavTree');
+
+  const favBtn = document.createElement('button');
+  favBtn.type = 'button';
+  favBtn.className = 'sidenav-top sidenav-fav';
+  favBtn.textContent = '⭐ Favoritos';
+  favBtn.addEventListener('click', ()=>{
+    history.replaceState(null,'',location.pathname+location.search+'#favoritos');
+    setFavoritesOnly(true);
+    closeSideNavMobile();
+  });
+  tree.appendChild(favBtn);
+
+  const allBtn = document.createElement('button');
+  allBtn.type = 'button';
+  allBtn.className = 'sidenav-top';
+  allBtn.textContent = 'Todos';
+  allBtn.addEventListener('click', ()=>{
+    document.querySelector('#partSeg button[data-part="all"]').click();
+    closeSideNavMobile();
+  });
+  tree.appendChild(allBtn);
+
+  // agrupa os idx-card já existentes por part, carregando o rótulo do megahead/subhead mais recente
+  let curLabel = null;
+  const nodesByPart = {chatgpt:[], claude:[], gemini:[], prof:[]};
+  Array.from(indexGrid.children).forEach(el=>{
+    if(el.classList.contains('index-megahead')){ curLabel = el.textContent; }
+    else if(el.classList.contains('index-subhead')){ curLabel = el.textContent; }
+    else if(el.classList.contains('idx-card')){
+      const part = el.dataset.part;
+      if(!nodesByPart[part]) return;
+      const nmEl = el.querySelector('.nm');
+      const nm = nmEl ? nmEl.textContent : '';
+      const redundant = !curLabel || curLabel.toLowerCase()===PART_LABEL[part].toLowerCase() || nm.toLowerCase().startsWith(curLabel.toLowerCase());
+      nodesByPart[part].push({label: redundant ? null : curLabel, nm, el});
+    }
+  });
+
+  PART_ORDER.forEach(part=>{
+    const topBtn = document.createElement('button');
+    topBtn.type = 'button';
+    topBtn.className = 'sidenav-top';
+    topBtn.dataset.part = part;
+    topBtn.textContent = PART_LABEL[part];
+    topBtn.addEventListener('click', ()=>{
+      document.querySelector(`#partSeg button[data-part="${part}"]`).click();
+      closeSideNavMobile();
+    });
+    tree.appendChild(topBtn);
+
+    let lastLabel = null;
+    nodesByPart[part].forEach(node=>{
+      if(node.label && node.label!==lastLabel){
+        const g = document.createElement('div');
+        g.className = 'sidenav-group';
+        g.textContent = node.label;
+        tree.appendChild(g);
+      }
+      lastLabel = node.label;
+      const leafBtn = document.createElement('button');
+      leafBtn.type = 'button';
+      leafBtn.className = 'sidenav-leaf';
+      leafBtn.textContent = node.nm;
+      leafBtn.addEventListener('click', ()=>{
+        document.querySelector(`#partSeg button[data-part="${part}"]`).click();
+        node.el.click();
+        closeSideNavMobile();
+      });
+      tree.appendChild(leafBtn);
+    });
+  });
+
+  partButtons.forEach(b=>{
+    b.addEventListener('click', ()=>{
+      document.querySelectorAll('.sidenav-top[data-part]').forEach(x=>x.classList.remove('active'));
+      const match = document.querySelector(`.sidenav-top[data-part="${b.dataset.part}"]`);
+      if(match) match.classList.add('active');
+    });
+  });
+}
+buildSideNav();
 </script>
 
 </body></html>
