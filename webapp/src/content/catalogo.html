@@ -304,6 +304,30 @@ mark{background:var(--purple); color:var(--purple-ink); border-radius:3px; paddi
 .fav-star.fav-active{color:var(--yellow);}
 .cmd-card .fav-star{position:absolute; top:8px; right:8px; z-index:2;}
 .insta-title-row{display:flex; align-items:flex-start; justify-content:space-between; gap:8px;}
+
+/* navegação drill-down estilo app — home / lista / detalhe, uma view ativa por vez */
+.home-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:16px; margin:4px 0 32px;}
+.home-tile{
+  text-align:left; border:1px solid var(--border); background:var(--surface); border-radius:18px; padding:24px 22px;
+  cursor:pointer; font:inherit; color:var(--fg); display:flex; flex-direction:column; gap:6px;
+  transition:transform .22s var(--ease), box-shadow .22s var(--ease), border-color .22s var(--ease);
+  animation:fadeInUp .4s var(--ease) backwards;
+}
+.home-tile:hover{box-shadow:var(--shadow); transform:translateY(-4px) scale(1.02); border-color:var(--purple);}
+.home-tile:active{transform:translateY(-1px) scale(.98);}
+.home-tile-icon{font-size:28px; line-height:1;}
+.home-tile-nm{font-family:'Baloo 2',sans-serif; font-weight:800; font-size:19px; margin-top:4px;}
+.home-tile-desc{font-size:12.5px; color:var(--muted); line-height:1.4;}
+.home-tile-ct{font-family:'JetBrains Mono',monospace; font-size:11.5px; color:var(--purple); font-weight:700; margin-top:auto; padding-top:8px;}
+.home-tile-fav{background:var(--yellow-fill); border-color:var(--yellow);}
+.home-tile-fav:hover{border-color:var(--yellow-ink);}
+
+.breadcrumb-bar{display:flex; align-items:center; gap:14px; margin:0 0 18px;}
+.breadcrumb-trail{font-size:13px; color:var(--muted); display:flex; align-items:center; gap:6px; flex-wrap:wrap;}
+.breadcrumb-trail b{color:var(--fg); font-weight:700;}
+.breadcrumb-trail .crumb{border:none; background:transparent; color:var(--purple); font:inherit; font-weight:700; font-size:13px; cursor:pointer; padding:0; text-decoration:underline;}
+
+.home-grid[hidden], .breadcrumb-bar[hidden], .index-grid[hidden], .index-head[hidden], #sections[hidden]{display:none;}
 </style>
 </head>
 <body>
@@ -352,6 +376,12 @@ mark{background:var(--purple); color:var(--purple-ink); border-radius:3px; paddi
       <button class="theme-btn" id="themeBtn" type="button">🌓 Tema</button>
     </div>
     <div class="result-count" id="resultCount"></div>
+  </div>
+
+  <div class="home-grid" id="homeGrid"></div>
+  <div class="breadcrumb-bar" id="breadcrumbBar" hidden>
+    <button class="btn-pill" id="btnBack" type="button">← Voltar</button>
+    <nav class="breadcrumb-trail" id="breadcrumbTrail"></nav>
   </div>
 
   <div class="index-head"><h2 id="indexLabel">Índice — clique para abrir</h2></div>
@@ -594,11 +624,7 @@ function addIdxCard(part,num){
   idx.dataset.searchtext = (title+' '+items.map(i=>i[0]+' '+i[1]).join(' ')).toLowerCase();
   const locked = !ACCESS.paid && !ACCESS.free.includes(part+'-'+num);
   idx.innerHTML = `<span class="num">${part==='claude'?'CLAUDE':part==='gemini'?'GEMINI':'0'+(num<10?'0'+num:num)}</span><span class="nm">${title}</span><span class="ct">${items.length} comando${items.length>1?'s':''}${locked?' · 🔒':''}</span>`;
-  idx.addEventListener('click', ()=>{
-    const sec = document.getElementById(id);
-    sec.open = true;
-    sec.scrollIntoView({behavior:'smooth', block:'start'});
-  });
+  idx.addEventListener('click', ()=>goDetail(id, part));
   indexGrid.appendChild(idx);
 }
 function addGroupHead(label){
@@ -662,11 +688,7 @@ let motionSubHeadEl; // preenchido pela IIFE de Motions logo abaixo; Skills se a
   idx.dataset.part = 'claude';
   idx.dataset.searchtext = searchText;
   idx.innerHTML = `<span class="num">MOTION</span><span class="nm">Motions — Guia Geral</span><span class="ct">${MOTIONS.length} prompts</span>`;
-  idx.addEventListener('click', ()=>{
-    const sec = document.getElementById(id);
-    sec.open = true;
-    sec.scrollIntoView({behavior:'smooth', block:'start'});
-  });
+  idx.addEventListener('click', ()=>goDetail(id, idx.dataset.part));
   // Nasce dentro de "Comandos por IA específica" (é a skill de motion do Claude Code), antes do Gemini.
   const motionSubHead = document.createElement('div');
   motionSubHead.className = 'index-subhead';
@@ -900,11 +922,7 @@ const SKILLS = [
   idx.dataset.part = 'claude';
   idx.dataset.searchtext = searchText;
   idx.innerHTML = `<span class="num">SKILLS</span><span class="nm">Skills para Claude Code</span><span class="ct">${SKILLS.length} skills</span>`;
-  idx.addEventListener('click', ()=>{
-    const sec = document.getElementById(id);
-    sec.open = true;
-    sec.scrollIntoView({behavior:'smooth', block:'start'});
-  });
+  idx.addEventListener('click', ()=>goDetail(id, idx.dataset.part));
   // Nasce dentro de "Comandos por IA específica" (é uma skill do Claude Code), antes de Motions —
   // ordem final: Claude → Skills → Motions → Gemini.
   const skillsSubHead = document.createElement('div');
@@ -970,11 +988,7 @@ const MCPS = [
   idx.dataset.part = 'claude';
   idx.dataset.searchtext = searchText;
   idx.innerHTML = `<span class="num">MCP</span><span class="nm">MCPs (Conectores)</span><span class="ct">${MCPS.length} conectores</span>`;
-  idx.addEventListener('click', ()=>{
-    const sec = document.getElementById(id);
-    sec.open = true;
-    sec.scrollIntoView({behavior:'smooth', block:'start'});
-  });
+  idx.addEventListener('click', ()=>goDetail(id, idx.dataset.part));
   // Nasce dentro de "Comandos por IA específica" — ordem final: Claude → Skills → Motions → MCPs → Gemini.
   const mcpsSubHead = document.createElement('div');
   mcpsSubHead.className = 'index-subhead';
@@ -1577,11 +1591,7 @@ Use sempre a imagem original como referência para cada geração.`}
   idx.dataset.part = 'prof';
   idx.dataset.searchtext = searchText;
   idx.innerHTML = `<span class="num">PRO</span><span class="nm">Prompts Pro — Foto e Vídeo</span><span class="ct">${PROFPROMPTS.length} prompts</span>`;
-  idx.addEventListener('click', ()=>{
-    const sec = document.getElementById(id);
-    sec.open = true;
-    sec.scrollIntoView({behavior:'smooth', block:'start'});
-  });
+  idx.addEventListener('click', ()=>goDetail(id, idx.dataset.part));
   indexGrid.appendChild(idx);
 
   const details = document.createElement('details');
@@ -1649,11 +1659,7 @@ Use sempre a imagem original como referência para cada geração.`}
   idx.dataset.part = 'prof';
   idx.dataset.searchtext = searchText;
   idx.innerHTML = `<span class="num">IMG</span><span class="nm">Edição de Imagem</span><span class="ct">${INSTA.length} prompts</span>`;
-  idx.addEventListener('click', ()=>{
-    const sec = document.getElementById(id);
-    sec.open = true;
-    sec.scrollIntoView({behavior:'smooth', block:'start'});
-  });
+  idx.addEventListener('click', ()=>goDetail(id, idx.dataset.part));
   indexGrid.appendChild(idx);
 
   const details = document.createElement('details');
@@ -1801,6 +1807,8 @@ const emptyState = document.getElementById('emptyState');
 const indexLabel = document.getElementById('indexLabel');
 const defaultEmptyHtml = emptyState.innerHTML;
 let currentPart = 'all';
+let viewMode = 'home'; // 'home' | 'list' | 'detail' — qual página da navegação em drill-down está ativa
+let viewTarget = null; // id da section/details aberta quando viewMode==='detail'
 let currentInstaType = 'all';
 let currentInstaTool = 'all';
 let favoritesOnly = false;
@@ -1810,6 +1818,9 @@ partButtons.forEach(b=>b.addEventListener('click', ()=>{
   b.classList.add('active');
   currentPart = b.dataset.part;
   favoritesOnly = false;
+  viewMode = 'list';
+  viewTarget = null;
+  history.pushState(null,'','#/'+currentPart);
   render();
 }));
 searchInput.addEventListener('input', render);
@@ -1838,19 +1849,26 @@ function updateIndexGroupHeads(){
 
 function render(){
   const q = searchInput.value.trim().toLowerCase();
+  const flatten = !!q || favoritesOnly; // busca/favoritos furam o drill-down e mostram tudo que combina, cruzando categorias
   let visibleCats = 0, visibleCmds = 0;
+
+  document.getElementById('homeGrid').hidden = !(viewMode==='home' && !flatten);
+  const showIndexGrid = flatten || viewMode==='list';
+  document.getElementById('indexGrid').hidden = !showIndexGrid;
+  document.querySelector('.index-head').hidden = !showIndexGrid;
+  document.getElementById('sections').hidden = !(flatten || viewMode==='detail');
 
   document.querySelectorAll('.idx-card').forEach(idx=>{
     const partOk = currentPart==='all' || idx.dataset.part===currentPart;
     const searchOk = !q || idx.dataset.searchtext.includes(q);
-    idx.hidden = favoritesOnly || !(partOk && searchOk);
+    idx.hidden = (!flatten && viewMode!=='list') || favoritesOnly || !(partOk && searchOk);
   });
   updateIndexGroupHeads();
 
-  document.querySelectorAll('section.cat, details.cat').forEach(()=>{});
   document.querySelectorAll('#sections > details').forEach(sec=>{
     const partOk = currentPart==='all' || sec.dataset.part===currentPart;
-    if(!partOk){ sec.hidden = true; return; }
+    const sectionRelevant = flatten ? partOk : (viewMode==='detail' && sec.id===viewTarget);
+    if(!sectionRelevant){ sec.hidden = true; return; }
     let catHasMatch = false;
     const cards = sec.querySelectorAll('.cmd-card, .motion-card, .insta-card');
     cards.forEach(card=>{
@@ -1865,7 +1883,8 @@ function render(){
     });
     sec.hidden = !catHasMatch;
     if(catHasMatch){ visibleCats++; }
-    if((q || favoritesOnly) && catHasMatch){ sec.open = true; } else if(!q && !favoritesOnly){ /* leave as is */ }
+    if((q || favoritesOnly) && catHasMatch){ sec.open = true; }
+    else if(viewMode==='detail' && sec.id===viewTarget){ sec.open = true; }
   });
 
   if(favoritesOnly && visibleCmds===0){
@@ -1887,6 +1906,100 @@ function render(){
     resultCount.textContent = '';
     indexLabel.textContent = 'Índice — clique para abrir';
   }
+  updateBreadcrumb();
+}
+function updateBreadcrumb(){
+  const bar = document.getElementById('breadcrumbBar');
+  const trail = document.getElementById('breadcrumbTrail');
+  if(viewMode==='home' || favoritesOnly || searchInput.value.trim()){ bar.hidden = true; return; }
+  bar.hidden = false;
+  const partLbl = ({chatgpt:'ChatGPT', claude:'Claude', gemini:'Gemini', prof:'Prompts Pro'})[currentPart] || 'Todos';
+  let html = `<button class="crumb" type="button" data-go="home">Início</button>`;
+  if(viewMode==='detail'){
+    const sec = document.getElementById(viewTarget);
+    const h3 = sec ? sec.querySelector('h3') : null;
+    html += ` / <button class="crumb" type="button" data-go="list">${partLbl}</button> / <b>${h3?h3.textContent:''}</b>`;
+  } else {
+    html += ` / <b>${partLbl}</b>`;
+  }
+  trail.innerHTML = html;
+  trail.querySelectorAll('.crumb').forEach(c=>{
+    c.addEventListener('click', ()=>{ if(c.dataset.go==='home') goHome(); else goList(currentPart); });
+  });
+}
+document.getElementById('btnBack').addEventListener('click', ()=>{
+  if(viewMode==='detail') goList(currentPart); else goHome();
+});
+function goHome(){
+  viewMode = 'home'; viewTarget = null; currentPart = 'all'; favoritesOnly = false;
+  partButtons.forEach(x=>x.classList.remove('active'));
+  document.querySelector('#partSeg button[data-part="all"]').classList.add('active');
+  history.pushState(null,'','#/');
+  render();
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+function goList(part){
+  viewMode = 'list'; viewTarget = null; currentPart = part; favoritesOnly = false;
+  partButtons.forEach(x=>x.classList.remove('active'));
+  const btn = document.querySelector(`#partSeg button[data-part="${part}"]`);
+  if(btn) btn.classList.add('active');
+  history.pushState(null,'','#/'+part);
+  render();
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+function goDetail(id, part){
+  if(part) currentPart = part;
+  viewMode = 'detail'; viewTarget = id; favoritesOnly = false;
+  partButtons.forEach(x=>x.classList.remove('active'));
+  const btn = document.querySelector(`#partSeg button[data-part="${currentPart}"]`);
+  if(btn) btn.classList.add('active');
+  const sec = document.getElementById(id);
+  if(sec) sec.open = true;
+  history.pushState(null,'','#/'+currentPart+'/'+id);
+  render();
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+function buildHomeGrid(){
+  const homeGrid = document.getElementById('homeGrid');
+  const TILES = [
+    {part:'chatgpt', icon:'💬', label:'ChatGPT', desc:'Comandos de texto e efeitos visuais', count: totalChatGPT},
+    {part:'claude', icon:'🟣', label:'Claude', desc:'Comandos, Skills, Motions e MCPs', count: totalClaude},
+    {part:'gemini', icon:'✨', label:'Gemini', desc:'Comandos específicos do Gemini', count: totalGemini},
+    {part:'prof', icon:'📸', label:'Prompts Pro', desc:'Fotografia, vídeo e edição de imagem', count: totalProf}
+  ];
+  TILES.forEach(t=>{
+    const tile = document.createElement('button');
+    tile.type = 'button';
+    tile.className = 'home-tile';
+    tile.innerHTML = `<span class="home-tile-icon">${t.icon}</span><span class="home-tile-nm">${t.label}</span><span class="home-tile-desc">${t.desc}</span><span class="home-tile-ct">${t.count} itens</span>`;
+    tile.addEventListener('click', ()=>goList(t.part));
+    homeGrid.appendChild(tile);
+  });
+  const favTile = document.createElement('button');
+  favTile.type = 'button';
+  favTile.className = 'home-tile home-tile-fav';
+  favTile.innerHTML = `<span class="home-tile-icon">⭐</span><span class="home-tile-nm">Favoritos</span><span class="home-tile-desc">Seus comandos marcados</span>`;
+  favTile.addEventListener('click', ()=>{ history.pushState(null,'','#favoritos'); setFavoritesOnly(true); });
+  homeGrid.appendChild(favTile);
+}
+function routeFromHash(){
+  const h = location.hash;
+  if(h === '#favoritos'){ setFavoritesOnly(true); return; }
+  const m = h.match(/^#\/([\w-]+)(?:\/([\w-]+))?$/);
+  if(!m || !m[1]){ viewMode = 'home'; viewTarget = null; render(); return; }
+  const part = m[1], target = m[2];
+  currentPart = part;
+  partButtons.forEach(x=>x.classList.remove('active'));
+  const btn = document.querySelector(`#partSeg button[data-part="${part}"]`);
+  if(btn) btn.classList.add('active'); else document.querySelector('#partSeg button[data-part="all"]').classList.add('active');
+  if(target){
+    viewMode = 'detail'; viewTarget = target;
+    const sec = document.getElementById(target);
+    if(sec) sec.open = true;
+  } else {
+    viewMode = 'list'; viewTarget = null;
+  }
+  render();
 }
 function setFavoritesOnly(v){
   favoritesOnly = v;
@@ -1899,8 +2012,10 @@ function setFavoritesOnly(v){
   }
   render();
 }
-render();
-if(location.hash === '#favoritos') setFavoritesOnly(true);
+buildHomeGrid();
+window.addEventListener('hashchange', routeFromHash);
+window.addEventListener('popstate', routeFromHash);
+routeFromHash();
 
 // theme toggle
 const themeBtn = document.getElementById('themeBtn');
