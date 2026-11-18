@@ -66,6 +66,15 @@ model Coupon {
   payments Payment[]
 }
 
+// Sugestão de prompt/comando enviada pelo usuário pelo catálogo.
+model Suggestion {
+  id        String   @id @default(cuid())
+  category  String
+  text      String
+  userEmail String?
+  createdAt DateTime @default(now())
+}
+
 // Um registro por fatura paga (Stripe invoice.paid) — base da adimplência e da comissão.
 model Payment {
   id               String   @id @default(cuid())

@@ -92,10 +92,11 @@ h1.title em{font-style:normal; color:var(--yellow);}
 .index-head h2{font-family:'Archivo',sans-serif; font-size:14px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); font-weight:700;}
 .index-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(210px,1fr)); gap:12px; margin-bottom:8px;}
 /* agrupamento temático do índice — puramente visual, não reordena nem renumera as seções/EXAMPLES */
-.index-megahead{grid-column:1/-1; display:flex; align-items:center; gap:12px; margin:28px 0 4px; padding-top:20px; border-top:1px solid var(--border);}
+.index-megahead{grid-column:1/-1; display:block; margin:28px 0 4px; padding-top:20px; border-top:1px solid var(--border);}
 .index-megahead:first-child{border-top:none; padding-top:0; margin-top:4px;}
 .index-megahead h2{font-family:'Baloo 2',sans-serif; font-size:16px; font-weight:800; color:var(--purple); letter-spacing:0;}
 .index-subhead{grid-column:1/-1; font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin:4px 0 -4px; padding-left:4px;}
+.index-megahead .group-desc, .index-subhead .group-desc{text-transform:none; font-weight:400; letter-spacing:normal; font-size:12.5px; color:var(--muted); margin:3px 0 0; padding-left:0;}
 .index-megahead[hidden], .index-subhead[hidden]{display:none;}
 .idx-card{
   text-align:left; border:1px solid var(--border); background:var(--surface); border-radius:12px; padding:12px 16px;
@@ -164,6 +165,8 @@ mark{background:var(--purple); color:var(--purple-ink); border-radius:3px; paddi
   padding:8px 12px; border-radius:999px; cursor:pointer; white-space:nowrap; flex:none;
 }
 .btn-pill:hover{background:var(--purple); color:var(--purple-ink);}
+a.btn-pill{display:inline-block; text-decoration:none;}
+.skill-install{margin-top:8px;}
 .motion-grid{display:flex; flex-direction:column; gap:8px;}
 .motion-card{border:1px solid var(--border); background:var(--surface); border-radius:12px; padding:12px 16px;}
 .motion-card-head{display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap;}
@@ -259,6 +262,14 @@ mark{background:var(--purple); color:var(--purple-ink); border-radius:3px; paddi
 }
 #toast.show{opacity:1; transform:translate(-50%,0);}
 
+.suggest-overlay{position:fixed; inset:0; background:rgba(26,11,34,.55); display:flex; align-items:center; justify-content:center; padding:20px; z-index:80;}
+.suggest-overlay[hidden]{display:none;}
+.suggest-modal{background:var(--bg); border-radius:14px; padding:22px; width:100%; max-width:420px; display:flex; flex-direction:column; gap:14px; box-shadow:0 20px 60px rgba(0,0,0,.3);}
+.suggest-head{display:flex; align-items:center; justify-content:space-between; font-size:15px; color:var(--fg);}
+.suggest-head button{border:none; background:transparent; font-size:16px; cursor:pointer; color:var(--muted);}
+.suggest-lbl{display:flex; flex-direction:column; gap:6px; font-size:12.5px; font-weight:700; color:var(--muted);}
+.suggest-lbl select, .suggest-lbl textarea{font:inherit; font-size:13.5px; font-weight:400; color:var(--fg); background:var(--surface); border:1px solid var(--border); border-radius:8px; padding:9px 10px; resize:vertical;}
+
 .footer{margin-top:44px; padding-top:20px; border-top:1px solid var(--border); font-size:12.5px; color:var(--muted); display:flex; justify-content:space-between; flex-wrap:wrap; gap:8px; align-items:center;}
 .footer .logo-mark{margin:0; gap:8px;}
 .footer .logo-mark span{color:var(--muted); font-size:12.5px; font-weight:600;}
@@ -276,11 +287,14 @@ mark{background:var(--purple); color:var(--purple-ink); border-radius:3px; paddi
 }
 .sidenav-head{display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); font-weight:700;}
 #sideNavClose{display:none; border:none; background:transparent; color:var(--muted); font-size:16px; line-height:1; cursor:pointer;}
-.sidenav-top{display:block; width:100%; text-align:left; border:none; background:transparent; font:inherit; font-weight:800; font-size:13px; color:var(--fg); padding:8px 6px; border-radius:8px; cursor:pointer; margin-top:4px;}
+.sidenav-top{display:flex; align-items:center; width:100%; text-align:left; border:none; background:transparent; font:inherit; font-weight:800; font-size:13px; color:var(--fg); padding:8px 6px; border-radius:8px; cursor:pointer; margin-top:4px;}
+.sidenav-top svg{width:15px; height:15px; margin-right:7px; flex:none;}
+.home-tile-icon svg{width:30px; height:30px; display:block;}
 .sidenav-top:hover, .sidenav-top.active{background:var(--accent-soft); color:var(--purple);}
 .sidenav-fav{color:var(--yellow-ink); background:var(--yellow-fill); margin-bottom:8px;}
 .sidenav-fav:hover, .sidenav-fav.active{background:var(--yellow); color:var(--yellow-ink);}
 .sidenav-group{font-size:10.5px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); font-weight:700; margin:10px 0 2px 14px;}
+.sidenav-group-top{color:var(--purple); margin:12px 0 2px 6px;}
 .sidenav-leaf{display:block; width:100%; text-align:left; border:none; background:transparent; font:inherit; font-size:12.5px; color:var(--muted); padding:5px 6px 5px 18px; border-radius:7px; cursor:pointer;}
 .sidenav-leaf:hover{background:var(--accent-soft); color:var(--purple);}
 #sideNavToggle{display:none; position:fixed; top:12px; left:12px; z-index:70; border:1px solid var(--border); background:var(--surface); color:var(--fg); font:inherit; font-weight:700; font-size:13px; padding:8px 14px; border-radius:999px; box-shadow:var(--shadow); cursor:pointer;}
@@ -353,11 +367,10 @@ mark{background:var(--purple); color:var(--purple-ink); border-radius:3px; paddi
       <h1 class="title">IA para <em>Leigos</em></h1>
       <p class="subtitle">Clique num tópico, escolha um comando, cole no chat. Nenhum jargão necessário.</p>
     </div>
-    <div class="stat-pills" id="statPills"></div>
   </header>
 
   <div class="howto">
-    <b>Como usar:</b> digite a barra (<code>/</code>) seguida do comando, antes ou depois da sua pergunta, no chat da IA. Clique num comando abaixo para copiá-lo. As categorias 12–46 são efeitos visuais — exigem uma imagem anexada junto do comando. As categorias Claude e Gemini podem não funcionar fora da respectiva IA. Combine comandos, por exemplo <code>/brainstorm + /concise</code>. Dentro de <b>Claude</b> ficam também os <b>Motions</b> (clique em "Ver prompt" pra abrir o template e em "Copiar prompt" pra levar o texto já com a identidade Hasta embutida), as <b>Skills</b> e os <b>MCPs (Conectores)</b> — com a ferramenta/IA em que cada um funciona. Em <b>Prompts Pro</b> ficam os mega-prompts de fotografia e vídeo profissional (produto, retrato, VFX e anúncio em vídeo — cole o texto inteiro como instrução inicial da conversa, antes de anexar suas imagens) e os prompts de <b>Edição de Imagem</b>, com filtro por tipo e por ferramenta/IA. Use o <b>menu lateral (☰)</b> pra trocar de categoria rápido e a <b>estrela</b> ☆ de cada card pra favoritar — seus favoritos ficam em "⭐ Favoritos", logado.
+    <b>Como usar:</b> digite a barra (<code>/</code>) seguida do comando, antes ou depois da sua pergunta, no chat da IA. Clique num comando abaixo para copiá-lo. Os comandos de "Efeitos Visuais" exigem uma imagem anexada junto do comando. As categorias Claude e Gemini podem não funcionar fora da respectiva IA. Combine comandos, por exemplo <code>/brainstorm + /concise</code>. Dentro de <b>Claude</b> ficam também os <b>Motions (Mini-Vídeos)</b> (clique em "Ver prompt" pra abrir o template e em "Copiar prompt" pra levar o texto já com a identidade Hasta embutida), as <b>Skills</b> (cada uma com o link de instalação, quando disponível) e os <b>MCPs (Conectores)</b> — com a ferramenta/IA em que cada um funciona. Em <b>Prompts Profissionais</b> ficam os mega-prompts de fotografia e vídeo (cole o texto inteiro como instrução inicial da conversa, antes de anexar suas imagens) e os prompts de SEO. Em <b>Sites Utilitários</b> ficam ferramentas externas, como bancos de imagem. Use o <b>menu lateral (☰)</b> pra trocar de categoria rápido, a <b>estrela</b> ☆ de cada card pra favoritar — seus favoritos ficam em "⭐ Favoritos", logado — e "💡 Sugerir um prompt" pra mandar uma ideia pro catálogo.
   </div>
 
   <div class="controls">
@@ -367,11 +380,11 @@ mark{background:var(--purple); color:var(--purple-ink); border-radius:3px; paddi
         <input id="search" type="text" placeholder="Buscar comando ou assunto… (ex: instagram, resumo, 3d)" autocomplete="off">
       </div>
       <div class="seg" id="partSeg">
-        <button data-part="all" class="active">Todos · 1148</button>
-        <button data-part="chatgpt">ChatGPT · 1008</button>
-        <button data-part="claude">Claude · 116</button>
+        <button data-part="chatgpt" class="active">ChatGPT · 1008</button>
+        <button data-part="claude">Claude · 122</button>
         <button data-part="gemini">Gemini · 4</button>
-        <button data-part="prof">Prompts Pro · 36</button>
+        <button data-part="prof">Prompts Profissionais · 24</button>
+        <button data-part="sites">Sites Utilitários · 3</button>
       </div>
       <button class="theme-btn" id="themeBtn" type="button">🌓 Tema</button>
     </div>
@@ -391,7 +404,7 @@ mark{background:var(--purple); color:var(--purple-ink); border-radius:3px; paddi
   <div class="empty-state" id="emptyState" hidden><b>Nada encontrado</b>Tenta outra palavra — por exemplo "vídeo", "marca" ou "retrato".</div>
 
   <div class="footer">
-    <span>1021 comandos + 116 recursos Claude (comandos, skills, motions e MCPs) + 36 prompts de edição de imagem e foto pro · 53 categorias</span>
+    <span>1021 comandos + 122 recursos Claude (comandos, skills, motions e MCPs) + 24 prompts profissionais + 3 sites úteis</span>
     <div class="logo-mark">
       <img src="examples/hasta-icon.png" width="16" height="16" alt="">
       <span>Guia de Comandos Secretos — @hasta.mkt</span>
@@ -401,6 +414,25 @@ mark{background:var(--purple); color:var(--purple-ink); border-radius:3px; paddi
 </div>
 
 <div id="toast"></div>
+
+<div class="suggest-overlay" id="suggestOverlay" hidden>
+  <form class="suggest-modal" id="suggestForm">
+    <div class="suggest-head"><b>Sugerir um prompt ou comando</b><button type="button" id="suggestClose" aria-label="Fechar">✕</button></div>
+    <label class="suggest-lbl">Classificação
+      <select id="suggestCategory" name="category">
+        <option value="ChatGPT">ChatGPT</option>
+        <option value="Claude">Claude</option>
+        <option value="Gemini">Gemini</option>
+        <option value="Prompts Profissionais">Prompts Profissionais</option>
+        <option value="Outro">Outro</option>
+      </select>
+    </label>
+    <label class="suggest-lbl">Sua sugestão
+      <textarea id="suggestText" name="text" rows="5" placeholder="Descreva o prompt, comando ou skill que você quer ver no catálogo…" required></textarea>
+    </label>
+    <button class="btn-pill" type="submit" id="suggestSubmit">Enviar sugestão</button>
+  </form>
+</div>
 
 <script>
 const DATA = [
@@ -450,8 +482,8 @@ const DATA = [
 ["chatgpt",44,"Mais Embalagens e Efeitos",[["bottlelabel","Design de rótulo de garrafa"],["canlabel","Lata com estampa chamativa"],["candywrap","Embalagem de bala divertida"],["boxprint","Caixa com arte impressa"],["bagprint","Sacola de papel de compras"],["giftwrap","Laço e fita"],["kitbox","Kit em caixa aberta"],["pouchbox","Pacote de papelão reciclado"],["perfumebottle","Rótulo elegante de perfume"],["lotionbottle","Frasco pastel de creme"],["pillbottle","Rótulo clássico de remédio"],["tubepackage","Embalagem de bisnaga"],["blisterpack2","Cúpula de plástico transparente"],["clamshell","Estojo transparente com dobradiça"],["pouchpack","Saché com fecho em pé"],["sachetpack","Saché de uso único"],["tinpackage","Lata de metal com dobradiça"],["boxset2","Caixa com divisórias"],["crateset","Caixotinho de madeira"],["basketset","Kit de cesta trançada"],["trayset","Bandeja moldada"],["displaystand","Expositor de loja"],["counterdisplay","Expositor compacto de balcão"]]],
 ["chatgpt",45,"Gráficos de Videogame",[["screenpic","Print de tela de videogame"],["bossscene","Batalha dramática contra o chefão"],["rolecard","Carta com atributos do personagem"],["loadpic","Tela de carregamento com barra"],["mapdraw","Mapa-múndi ilustrado"],["pixelchar","Sprite de pixel art"],["minifigure","Boneco estilo blocos"],["dungeonmap2","Mapa de masmorra em pergaminho"],["achievement","Medalha de conquista desbloqueada"],["levelup","Aviso de subir de nível"],["powerupicon","Ícone brilhante de power-up"],["questmarker","Ícone de marcador de missão"],["skilltree","Árvore de habilidades"],["leaderboard","Ranking de jogadores"],["avatarcard","Card de perfil de avatar"],["guildcrest","Brasão simétrico de guilda"],["weaponicon","Ícone de silhueta de arma"],["armoricon","Ícone de armadura metálica"],["mountcard","Carta de criatura companheira"],["petcompanion","Mascote companheiro fofo"],["biomescene","Cena temática de bioma"],["eventbanner2","Banner de evento limitado"],["seasonpass","Trilha de recompensas ligada"],["battlepass","Nível de posse de batalha"]]],
 ["chatgpt",46,"Mais Estilos Retrô e Educativos",[["oldscreen","Monitor velho e grosso"],["matchpack","Caixinha de fósforo vintage"],["tinlabel","Lata velha enferrujada"],["signpaint","Placa de loja pintada"],["oldprint","Página de catálogo antigo"],["typedpage","Página de máquina de escrever"],["oldcatalog","Página de enciclopédia"],["pinbutton","Pin esmaltado"],["oldradio","Rádio antigo de madeira"],["vintagetv","Televisão velha e quadrada"],["oldphone","Telefone de disco"],["oldcamera","Câmera antiga de filme"],["oldbicycle","Bicicleta com cestinha"],["oldsuitcase","Mala com adesivos de viagem"],["oldticket","Ingresso com borda picotada"],["oldstamp","Selo postal antigo"],["oldcoin","Moeda de metal fosca"],["oldmap","Mapa do tesouro amarelado"],["oldlock","Cadeado de ferro enferrujado"],["oldclock","Relógio com números romanos"],["oldlantern","Lampião antigo brilhante"],["oldbook","Livro encadernado em couro"]]],
-["claude",1,"Modos Avançados de Resposta (Claude)",[["godmode","Respostas de alto impacto e sem limites"],["devil","Defenda o lado oposto com maestria"],["10x","Torne a resposta 10x melhor, mais forte e direta"],["pitch","Crie um pitch de 30 segundos irresistível"],["ghost","Responda de forma natural e próxima"],["scout","Revele riscos, ameaças e pontos invisíveis"],["artifacts","Construa apps e ferramentas interativas"],["critique","Avalie, critique e sugira melhorias reais"],["explainlikeim5","Explique de forma simples e fácil de entender"]]],
-["gemini",1,"Comandos Secretos Gemini",[["satelite-zoom","Zoom estilo vista de satélite sobre a cena"],["photoshoot-ad","Ensaio fotográfico estilo anúncio profissional"],["unboxing","Sequência de unboxing do produto"],["logo-reveal","Revelação cinematográfica do logo"]]]
+["claude",1,"Comandos para Texto",[["godmode","Respostas de alto impacto e sem limites"],["devil","Defenda o lado oposto com maestria"],["10x","Torne a resposta 10x melhor, mais forte e direta"],["pitch","Crie um pitch de 30 segundos irresistível"],["ghost","Responda de forma natural e próxima"],["scout","Revele riscos, ameaças e pontos invisíveis"],["artifacts","Construa apps e ferramentas interativas"],["critique","Avalie, critique e sugira melhorias reais"],["explainlikeim5","Explique de forma simples e fácil de entender"]]],
+["gemini",1,"Efeitos Visuais",[["satelite-zoom","Zoom estilo vista de satélite sobre a cena"],["photoshoot-ad","Ensaio fotográfico estilo anúncio profissional"],["unboxing","Sequência de unboxing do produto"],["logo-reveal","Revelação cinematográfica do logo"]]]
 ];
 
 const IDENTITY = `Identidade visual Hasta: roxo #4f1964 (principal), amarelo #ffb600 (destaque), amarelo claro #fedb00 (preenchimentos), branco #ffffff e quase-preto #1a0b22. Tipografia: Montserrat ExtraBold/Black para headlines, League Spartan para subtítulos, Montserrat para textos. Logo: círculo amarelo com ".oO" em roxo + palavra "hasta.mkt" em Montserrat Bold roxo (use o arquivo [LOGO] anexado; em fundo escuro, mantenha o círculo e escreva "hasta.mkt" em branco). Nada de gradientes coloridos genéricos ou neon: o brilho, quando houver, é amarelo ou roxo.`;
@@ -509,26 +541,10 @@ const MOTION_TIPS = [
 const sectionsEl = document.getElementById('sections');
 const indexGrid = document.getElementById('indexGrid');
 const totalChatGPT = DATA.filter(d=>d[0]==='chatgpt').reduce((a,d)=>a+d[3].length,0);
-const totalClaude = DATA.filter(d=>d[0]==='claude').reduce((a,d)=>a+d[3].length,0) + MOTIONS.length + 97 + 5; // +5 motions +97 skills +5 MCPs, tudo dentro de Claude (skills e MCPs classificados em seções visuais separadas)
+const totalClaude = DATA.filter(d=>d[0]==='claude').reduce((a,d)=>a+d[3].length,0) + MOTIONS.length + 102 + 6; // +5 motions +102 skills (97 + 5 do antigo "instalar ferramentas de edição") +6 MCPs (5 + Kairogen)
 const totalGemini = DATA.filter(d=>d[0]==='gemini').reduce((a,d)=>a+d[3].length,0);
-const totalProf = 6 + 30; // 6 prompts pro + 30 prompts de edição de imagem (ex-Instagram), agora tudo dentro de Prompts Pro
-
-document.getElementById('statPills').innerHTML = `
-  <div class="stat-pill"><span class="dot"></span>ChatGPT <b data-count="${totalChatGPT}">0</b></div>
-  <div class="stat-pill"><span class="dot"></span>Claude <b data-count="${totalClaude}">0</b></div>
-  <div class="stat-pill"><span class="dot"></span>Gemini <b data-count="${totalGemini}">0</b></div>
-  <div class="stat-pill"><span class="dot"></span>Prompts Pro <b data-count="${totalProf}">0</b></div>
-  <div class="stat-pill">Categorias <b data-count="${DATA.length+5}">0</b></div>`;
-document.querySelectorAll('.stat-pill b[data-count]').forEach(el=>{
-  const target = parseInt(el.dataset.count,10);
-  const dur = 700, start = performance.now();
-  function tick(now){
-    const p = Math.min(1,(now-start)/dur);
-    el.textContent = Math.round(target * (1-Math.pow(1-p,3)));
-    if(p<1) requestAnimationFrame(tick);
-  }
-  requestAnimationFrame(tick);
-});
+const totalProf = 23 + 1; // 23 prompts em "Foto e Vídeo" (6 originais + 10 de imagem + 5 de motion + 2 de edição de vídeo) + 1 em SEO
+const totalSites = 3; // 3 sites em "Bancos de Imagem"
 
 function slug(part,num){ return part+'-'+num; }
 
@@ -589,7 +605,7 @@ DATA.forEach(([part,num,title,items])=>{
         <svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m6 9 6 6 6-6"/></svg>
       </div>
     </summary>
-    <div class="cat-body">${EXAMPLES[num] ? `<div class="example-shot"><img src="${EXAMPLES[num].file}" alt="Exemplo gerado com /${EXAMPLES[num].cmd}" loading="lazy"><div class="cap"><span class="cmd">/${EXAMPLES[num].cmd}</span><span class="lbl">exemplo gerado</span></div></div>` : ''}${locked ? `<div class="locked-cat"><p>🔒 ${items.length} comando${items.length>1?'s':''} aqui é conteúdo pago.</p><a class="btn-pill" href="/pricing">${ACCESS.loggedIn?'Ver planos e desbloquear':'Cadastre-se e desbloqueie'}</a></div>` : '<div class="cmd-grid"></div>'}</div>`;
+    <div class="cat-body">${part==='claude'?'<p class="group-desc" style="margin-bottom:10px;">Modos de resposta exclusivos do Claude — cole no chat como qualquer outro comando.</p>':''}${part==='gemini'?'<p class="group-desc" style="margin-bottom:10px;">Efeitos visuais específicos do Gemini — anexe 1 imagem antes de usar.</p>':''}${EXAMPLES[num] ? `<div class="example-shot"><img src="${EXAMPLES[num].file}" alt="Exemplo gerado com /${EXAMPLES[num].cmd}" loading="lazy"><div class="cap"><span class="cmd">/${EXAMPLES[num].cmd}</span><span class="lbl">exemplo gerado</span></div></div>` : ''}${locked ? `<div class="locked-cat"><p>🔒 ${items.length} comando${items.length>1?'s':''} aqui é conteúdo pago.</p><a class="btn-pill" href="/pricing">${ACCESS.loggedIn?'Ver planos e desbloquear':'Cadastre-se e desbloqueie'}</a></div>` : '<div class="cmd-grid"></div>'}</div>`;
   if (!locked) {
     const grid = details.querySelector('.cmd-grid');
     items.forEach(([cmd,desc])=>{
@@ -627,24 +643,24 @@ function addIdxCard(part,num){
   idx.addEventListener('click', ()=>goDetail(id, part));
   indexGrid.appendChild(idx);
 }
-function addGroupHead(label){
+function addGroupHead(label,desc){
   const h = document.createElement('div');
   h.className = 'index-megahead';
-  h.innerHTML = `<h2>${label}</h2>`;
+  h.innerHTML = `<h2>${label}</h2>${desc?`<p class="group-desc">${desc}</p>`:''}`;
   indexGrid.appendChild(h);
   return h;
 }
-function addSubHead(label){
+function addSubHead(label,desc){
   const h = document.createElement('div');
   h.className = 'index-subhead';
-  h.textContent = label;
+  h.innerHTML = `<span class="subhead-label">${label}</span>${desc?`<p class="group-desc">${desc}</p>`:''}`;
   indexGrid.appendChild(h);
   return h;
 }
 
 const INDEX_ORDER = [
-  {group:'Prompts de texto — sem imagem', items:[1,2,3,4,5,6,7,8,9,10].map(n=>['chatgpt',n])},
-  {group:'Efeitos visuais — anexe 1 imagem', subs:[
+  {group:'Comandos para Texto', desc:'Respostas, análises e textos prontos pra colar no chat — sem precisar anexar imagem.', items:[1,2,3,4,5,6,7,8,9,10].map(n=>['chatgpt',n])},
+  {group:'Efeitos Visuais', desc:'Comandos que transformam uma foto: anexe 1 imagem antes de usar.', subs:[
     {sub:'Efeitos gerais', items:[['chatgpt',11]]},
     {sub:'3D, objetos & colecionáveis', items:[['chatgpt',12],['chatgpt',13],['chatgpt',33]]},
     {sub:'Foto de produto', items:[['chatgpt',16],['chatgpt',32]]},
@@ -663,16 +679,16 @@ const INDEX_ORDER = [
     {sub:'Iluminação, pôsteres e artesanal', items:[['chatgpt',29],['chatgpt',31],['chatgpt',35]]}
   ]},
   {group:'Ferramentas específicas (Claude e Gemini)', subs:[
-    {sub:'Claude', items:[['claude',1]]},
-    {sub:'Gemini', items:[['gemini',1]]}
+    {sub:'Claude', desc:'Modos de resposta exclusivos do Claude — cole no chat como qualquer outro comando.', items:[['claude',1]]},
+    {sub:'Gemini', desc:'Efeitos visuais específicos do Gemini — anexe 1 imagem antes de usar.', items:[['gemini',1]]}
   ]}
 ];
 
 const subHeadEls = {};
 INDEX_ORDER.forEach(g=>{
-  addGroupHead(g.group);
+  addGroupHead(g.group, g.desc);
   (g.items||[]).forEach(([p,n])=>addIdxCard(p,n));
-  (g.subs||[]).forEach(s=>{ subHeadEls[s.sub] = addSubHead(s.sub); s.items.forEach(([p,n])=>addIdxCard(p,n)); });
+  (g.subs||[]).forEach(s=>{ subHeadEls[s.sub] = addSubHead(s.sub, s.desc); s.items.forEach(([p,n])=>addIdxCard(p,n)); });
 });
 const guiasHead = addGroupHead('Guias & recursos extra');
 let motionSubHeadEl; // preenchido pela IIFE de Motions logo abaixo; Skills se ancora nele pra ficar Claude → Skills → Motions → Gemini
@@ -687,12 +703,12 @@ let motionSubHeadEl; // preenchido pela IIFE de Motions logo abaixo; Skills se a
   idx.style.animationDelay = nextDelay();
   idx.dataset.part = 'claude';
   idx.dataset.searchtext = searchText;
-  idx.innerHTML = `<span class="num">MOTION</span><span class="nm">Motions — Guia Geral</span><span class="ct">${MOTIONS.length} prompts</span>`;
+  idx.innerHTML = `<span class="num">MOTION</span><span class="nm">Motions (Mini-Vídeos)</span><span class="ct">${MOTIONS.length} prompts</span>`;
   idx.addEventListener('click', ()=>goDetail(id, idx.dataset.part));
   // Nasce dentro de "Comandos por IA específica" (é a skill de motion do Claude Code), antes do Gemini.
   const motionSubHead = document.createElement('div');
   motionSubHead.className = 'index-subhead';
-  motionSubHead.textContent = 'Motions';
+  motionSubHead.innerHTML = '<span class="subhead-label">Motions (Mini-Vídeos)</span><p class="group-desc">Templates HTML/GSAP prontos pra gerar mini-vídeos animados com a identidade da marca.</p>';
   indexGrid.insertBefore(motionSubHead, subHeadEls['Gemini']);
   indexGrid.insertBefore(idx, subHeadEls['Gemini']);
   motionSubHeadEl = motionSubHead;
@@ -706,7 +722,7 @@ let motionSubHeadEl; // preenchido pela IIFE de Motions logo abaixo; Skills se a
     <summary class="cat-head">
       <div class="cat-head-left">
         <span class="cat-badge">M</span>
-        <h3>Motions — Guia Geral</h3>
+        <h3>Motions (Mini-Vídeos)</h3>
       </div>
       <div style="display:flex;align-items:center;gap:10px;">
         <span class="cat-count">${MOTIONS.length}</span>
@@ -761,45 +777,16 @@ let motionSubHeadEl; // preenchido pela IIFE de Motions logo abaixo; Skills se a
   sectionsEl.appendChild(details);
 })();
 
-// Edição de Imagem (ex-"Guia de Instagram") — vive dentro de Prompts Pro, classificado por tipo e por ferramenta/IA
-const TYPE_LABELS = {imagem:'Prompt de imagem', motion:'Prompt de motion', video:'Edição de vídeo', ferramenta:'Ferramenta', seo:'SEO', oferta:'Oferta de serviço'};
-const TOOL_LABELS = {imagem:'Gerador de imagem', claude:'Claude', claudecode:'Claude Code', kairogen:'Kairogen (MCP)', bancos:'Bancos de imagem', github:'GitHub / open source', gsc:'Search Console', ia:'IA (geral)'};
-const INSTA = [
-  {type:'imagem', tool:'imagem', title:'Efeito 4K', teaser:'Upscale preservando identidade, pose e fundo originais.', prompt:'Melhore a imagem para resolução 4K preservando fielmente a identidade, os traços, as proporções, a pose, a composição, a iluminação e o fundo originais. Aumente a nitidez e recupere os detalhes naturais da pele, do cabelo e das texturas. Reduza o ruído e os artefatos de compressão sem suavizar a pele nem aplicar filtros artificiais. Não altere, não deforme e não adicione elementos. Mantenha um resultado fotorrealista, natural e fiel à imagem de referência.', src:'Davison (@davision.eth)', link:'https://instagram.com/p/DfHiHsWkY4s'},
-  {type:'imagem', tool:'imagem', title:'Pele melhorada', teaser:'Reduz imperfeições sem perder a textura real da pele.', prompt:'Melhore a pele mantendo completamente a identidade e a estrutura originais. Preserve poros, sardas, textura, reflexos e variações naturais. Reduza apenas imperfeições temporárias e vermelhidão. Mantenha a iluminação, os traços do rosto e a cor originais. Sem suavização excessiva, brilho artificial, remodelação facial ou nitidez exagerada. Resultado natural e fotorrealista.', src:'Davison (@davision.eth)', link:'https://instagram.com/p/DfHiHsWkY4s'},
-  {type:'imagem', tool:'imagem', title:'Efeito GTA V', teaser:'Reconstrói a cena como ambiente 3D estilo videogame.', prompt:'Reconstrua a cena como um ambiente 3D realista de GTA V, mantendo fielmente pessoas, veículos, arquitetura, terreno, objetos, composição e perspectiva. Use estética de videogame com geometria 3D, texturas digitais, iluminação realista, sombras definidas e materiais típicos de GTA V. Os personagens devem parecer realistas, mas estilizados. Sem aparência fotográfica, cinematográfica ou profundidade de campo exagerada.', src:'Davison (@davision.eth)', link:'https://instagram.com/p/DfHiHsWkY4s'},
-  {type:'imagem', tool:'imagem', title:'Efeito Minecraft', teaser:'Mantém a pessoa intacta e transforma só o fundo em blocos.', prompt:'Mantenha a pessoa 100% fotorrealista e intacta, preservando rosto, pele, cabelo, expressão, pose e roupa. Reconstrua apenas o fundo como uma réplica estruturalmente precisa de Minecraft, respeitando exatamente a perspectiva, a distribuição, as proporções e a posição dos elementos. Transforme os objetos que interagem com a pessoa em blocos de Minecraft. Iluminação natural e realista. Sem modificar a pessoa nem adicionar elementos.', src:'Davison (@davision.eth)', link:'https://instagram.com/p/DfHiHsWkY4s'},
-  {type:'imagem', tool:'imagem', title:'Retrato profissional', teaser:'Vira retrato de estúdio com fundo cinza-claro e luz uniforme.', prompt:'Transforme a imagem em um retrato profissional de estúdio, mantendo exatamente a identidade, o rosto, a roupa, o cabelo e os acessórios originais. Enquadramento de cabeça e ombros, composição centralizada e olhar direto para a câmera. Fundo cinza-claro e limpo, com iluminação de estúdio suave e uniforme. Preserve a textura natural da pele, do cabelo e da roupa. Sem suavização excessiva, deformações ou mudanças no rosto. Resultado profissional e fotorrealista.', src:'Davison (@davision.eth)', link:'https://instagram.com/p/DfHiHsWkY4s'},
-  {type:'imagem', tool:'imagem', title:'Efeito Paint', teaser:'Redesenho propositalmente tosco, estilo MS Paint.', prompt:'Redesenhe a imagem anexada do jeito mais tosco, rabiscado e lamentável possível. Use fundo branco e faça parecer desenhada num programa de pintura de computador antigo, com mouse. Deve lembrar vagamente a imagem original, mas não muito, como se alguém tivesse tentado copiar sem saber desenhar, com qualidade propositalmente baixa. Na real, faça o que quiser, não importa como fique. Use o estilo do Paint da Microsoft.', src:'Davison (@davision.eth)', link:'https://instagram.com/p/DfHiHsWkY4s'},
-  {type:'imagem', tool:'imagem', title:'Mundo de LEGO', teaser:'Pessoa intacta, fundo reconstruído em peças de LEGO.', prompt:'Mantenha a pessoa 100% fotorrealista e intacta. Reconstrua o fundo como uma réplica precisa de LEGO, respeitando composição, perspectiva, proporções e posição de todos os elementos. Transforme os objetos que interagem com a pessoa em peças de LEGO na escala correta. Use iluminação diurna realista, sombras naturais e reflexos no plástico. O fundo deve parecer uma construção de LEGO detalhada e reconhecível. Sem modificar a pessoa nem adicionar texto.', src:'Davison (@davision.eth)', link:'https://instagram.com/p/DfHiHsWkY4s'},
-  {type:'imagem', tool:'imagem', title:'Anúncio de produto', teaser:'Isola o produto e cria foto publicitária premium.', prompt:'Isole o produto da imagem de referência e crie uma foto publicitária premium, com iluminação profissional, cores precisas e materiais realistas. Crie o produto com seus ingredientes principais, com texturas naturais, sombras suaves, reflexos sutis e fundo desfocado. Mantenha uma composição equilibrada, atraente e comercial, sem aparência artificial.', src:'Davison (@davision.eth)', link:'https://instagram.com/p/DfHiHsWkY4s'},
-  {type:'imagem', tool:'imagem', title:'Selfie em grupo', teaser:'Monta selfie espontânea mantendo rostos e poses originais.', prompt:'Crie uma selfie em grupo espontânea com as pessoas bem juntas, ombro a ombro, olhando para a câmera na altura dos olhos e mantendo seus rostos, expressões e poses originais. Use iluminação natural, textura de pele realista e as pequenas imperfeições de uma foto tirada com iPhone. Mantenha o fundo, a distribuição, as proporções, a perspectiva e o enquadramento originais.', src:'Davison (@davision.eth)', link:'https://instagram.com/p/DfHiHsWkY4s'},
-  {type:'imagem', tool:'imagem', title:'Efeito anime', teaser:'Converte em ilustração 2D de anime sem mudar a composição.', prompt:'Transforme a imagem de referência em uma ilustração 2D de anime japonês, preservando exatamente a composição, o enquadramento, a pose, as proporções e a expressão dos personagens. Estilize os olhos, o cabelo e os traços com linhas limpas e sombreado suave, sem alterar a identidade nem exagerar a anatomia. Mantenha as cores, a iluminação e a perspectiva originais. Transforme também o fundo no estilo anime. Não mude o enquadramento, o zoom nem a composição da imagem.', src:'Davison (@davision.eth)', link:'https://instagram.com/p/DfHiHsWkY4s'},
+// Sites úteis — banco de imagens, agora dentro de "Sites Utilitários".
+const SITES_BANCOS = [
+  {title:'Film.ai', desc:'Grande variedade de imagens de filmes e séries.'},
+  {title:'Filmgrab', desc:'Focado em imagens de filmes, grande acervo.'},
+  {title:'The Movie DB', desc:'Pesquise o filme e clique em imagens de fundo.'}
+];
 
-  {type:'motion', tool:'claude', title:'Prompt 1 — Lançamento de app (30s)', teaser:'App Store style, iPhone 3D flutuando, brilho colorido.', prompt:'Crie em HTML (1920x1080, GSAP) um vídeo promocional de app de 30s, estilo lançamento da App Store: fundo escuro com brilho colorido, iPhone 3D flutuando, headline com palavra-chave em [COR], zoom na tela, cards saltando do celular e transições com blur.\n\nApp: [NOME] | Logo: [LOGO] | Tagline: [TAGLINE]\nCenas: [FRASE 1] → [FRASE 2] → [FRASE 3] → [FRASE 4] → [FRASE 5] → celulares em leque → logo + tagline.\nCrie a tela do app de cada cena de acordo com a frase.', src:'Eduardo Cruz (@_eduardojcruz)', link:'https://instagram.com/p/DfCicbXkdOx'},
-  {type:'motion', tool:'claude', title:'Prompt 2 — Comercial de produto (15s)', teaser:'Produto 3D girando como protagonista, echo trail.', prompt:'Crie em HTML (1920x1080, GSAP) um comercial de 15s para [PRODUTO]: duas cores ([COR] e quase-preto), tipografia extra bold em caixa alta, o produto em 3D girando como protagonista, transições rápidas com motion blur e echo trail.\n\nMarca: [NOME] | Logo: [LOGO] | Tagline: [TAGLINE]\nCenas: pontinho explode na tela → [FRASE 1] → close nos detalhes do produto → [FRASE 2] com o produto girando → [BENEFÍCIO 1] e [BENEFÍCIO 2] aparecendo em cards ao redor do produto → [FRASE 3] → [PALAVRA 1] [PALAVRA 2] [PALAVRA 3] → logo + tagline.', src:'Eduardo Cruz (@_eduardojcruz)', link:'https://instagram.com/p/DfCicbXkdOx'},
-  {type:'motion', tool:'claude', title:'Prompt 3 — Motion 30s minimalista P&B', teaser:'Headlines grandes, reveal palavra por palavra, P&B.', prompt:'Crie em HTML (1920x1080, fundo preto, GSAP) um motion de 30s estilo lançamento de app: minimalista P&B, headlines grandes com reveal palavra por palavra, mockups de UI, transições rápidas com echo trail e sem cortes secos. Marca: [NOME] | Logo: [LOGO] | Tagline: [TAGLINE]\n\nCenas: abertura com o logo → [FRASE 1] → [FRASE 2] → [FRASE 3] → [FRASE 4] → [FRASE 5] → elementos formam o logo → logo + tagline. Crie a UI de cada cena de acordo com a frase.', src:'Eduardo Cruz (@_eduardojcruz)', link:'https://instagram.com/p/DfCicbXkdOx'},
-  {type:'motion', tool:'claude', title:'Prompt 4 — Showreel que ensina animação (15s)', teaser:'Squash & stretch, easing, follow-through, anticipation.', prompt:'Crie em HTML (16:9, GSAP) um showreel de motion designer de 15s que ensina princípios de animação. Visual: fundo alternando cinza claro e grafite, fonte condensada pesada, azul e vermelho de destaque, anotações manuscritas com setinhas.\n\nCenas: bolinha quicando com rastro (squash & stretch) → vira o ponto final de "[FRASE DE ABERTURA]." → palavras animadas pelo próprio significado: [PALAVRA 1], [PALAVRA 2], [PALAVRA 3], [PALAVRA 4] → gráfico de easing (linear vs ease in-out) → cobrinha de pontos num grid (follow-through) → dial carregando até 100% (anticipation) → "[CARGO] / [NOME]." + nota manuscrita "[CTA]".', src:'Eduardo Cruz (@_eduardojcruz)', link:'https://instagram.com/p/DfCicbXkdOx'},
-  {type:'motion', tool:'claude', title:'Prompt 5 — Apresentação pessoal (15s)', teaser:'Wipes, íris, count-up de números, uma palavra por frase.', prompt:'Crie em HTML (1920x1080, GSAP) um vídeo de apresentação pessoal de 15s: fundo preto alternando com [COR], tipografia bold com uma palavra por frase em itálico serifado colorido, transições com wipes e iris, números com count-up.\n\nDados: [NOME] | [CARGO] | Foto: [FOTO] | Instagram: [@]\nCenas: linha vira pílula que forma o "O" do nome → foto em círculo com texto girando + [FRASE DE IMPACTO] → [DESTAQUE 1], [DESTAQUE 2] e [DESTAQUE 3] com infográficos animados → foto + nome + [CTA] com botão "Seguir" sendo clicado.', src:'Eduardo Cruz (@_eduardojcruz)', link:'https://instagram.com/p/DfCicbXkdOx'},
-
-  {type:'video', tool:'claudecode', title:'Instalar ferramentas de edição', teaser:'Monta o editor de vídeo pessoal dentro do Claude Code.', prompt:'Quero que você seja meu editor de vídeo. Instala essas ferramentas no meu computador:\n\n1. Remotion: github.com/remotion-dev/remotion\n2. Hyperframes: github.com/hyperframes/hyperframes\n3. FFmpeg: ffmpeg.org\n4. Whisper: github.com/openai/whisper\n5. yt-dlp: github.com/yt-dlp/yt-dlp\n\nTesta cada uma e me avisa quando estiver tudo pronto.', src:'Fellipe Sales (@ofellipesales)', link:'https://instagram.com/p/DfAOaiPGyNu'},
-  {type:'video', tool:'claudecode', title:'Definir ficha de estilo', teaser:'Claude estuda vídeos de referência e monta a ficha de estilo.', prompt:'Aprenda o estilo de edição desses vídeos: [link1], [link2], [link3].\n\n1. Estude o que eles têm em comum: fontes, cores e legendas; cortes, zooms e ritmo; motion graphics, música e som.\n2. Monte uma ficha de estilo pra eu revisar. Com a minha cara, não uma cópia.\n\nQuando eu aprovar, segue ele toda vez que editar pra mim.\nEstrutura da ficha de estilo: fontes | cores | legendas | cortes | ritmo | música.', src:'Fellipe Sales (@ofellipesales)', link:'https://instagram.com/p/DfAOaiPGyNu'},
-  {type:'video', tool:'claudecode', title:'Editar e exportar reel', teaser:'Corta pausas, aplica ficha de estilo, legenda e exporta.', prompt:'Edita o meu vídeo novo e transforma num Reel de Instagram. [NOME DO ARQUIVO], na pasta de material bruto.\n\n1. Corte todo pause maior que 0,1 segundo.\n2. Segue a minha ficha de estilo.\n3. Coloca legendas, música e motion graphics.\n4. Usa o que for vivo dos cortes de referência.\n5. Me mostra um storyboard pra revisar primeiro e depois exporta na pasta de exportações.', src:'Fellipe Sales (@ofellipesales)', link:'https://instagram.com/p/DfAOaiPGyNu'},
-
-  {type:'ferramenta', tool:'kairogen', title:'Kairogen via MCP no Claude', teaser:'Gera imagens e vídeos direto na conversa, sem sair do Claude.', items:['No Claude, abra "Personalizar" → "Conectores".','Clique no "+" e escolha "Adicionar conector personalizado".','Acesse kairogen.ai, clique em MCP e copie o link de endpoint.','Cole o link no Claude, dê o nome de "Kairogen" e adicione.'], src:'Uandrey (@uandrey)', link:'https://instagram.com/p/Dap_4IvMqF-'},
-  {type:'ferramenta', tool:'bancos', title:'Bancos de imagens de filmes e séries', teaser:'Três fontes pra ilustrar conteúdo com still de filmes.', items:['Film.ai — grande variedade de imagens de filmes e séries.','Filmgrab — focado em imagens de filmes, grande acervo.','The Movie DB — pesquise o filme e clique em imagens de fundo.'], src:'@academiabrasilsocialmedia', link:'https://instagram.com/p/DfFr0M-n3MW'},
-  {type:'ferramenta', tool:'github', title:'Google Maps como base de prospecção', teaser:'Projeto open source que transforma o Maps em lista de clientes.', items:['Roda localmente, sem serviço pago de scraping.','Entrada: cidade + ramo de atividade.','Saída: nome do comércio, contato, endereço e página.','Aplicação: prospecção ativa e listas segmentadas.'], src:'Hudson Brendon (@99hud)', link:'https://instagram.com/reels/DdmAhlIiDdg'},
-
-  {type:'seo', tool:'gsc', title:'Auditoria de indexação (Search Console)', teaser:'Separa lixo de página real na lista de "rastreada, não indexada".', prompt:'Estou colando uma lista de URLs do relatório "Rastreada, mas não indexada no momento" do Google Search Console. Separe cada URL em categorias (ex.: duplicatas com UTM ou rastreamento, feeds RSS, paginação, caminhos malformados ou com erro de digitação, duplicatas com sufixo ou barra no final, parâmetros de referência externa, arquivos robots ou sitemap e URLs limpas de páginas reais).\n\nMe entregue:\n1) Uma tabela com categoria / quantidade / % do total\n2) Um parágrafo curto por categoria explicando o que causa e se é um problema real\n3) Uma divisão clara entre "erro meu, vale corrigir" e "o Google está tratando certo, ignore"\n4) As URLs específicas de páginas reais que valem investigar\n\nAponte qualquer padrão que pareça gerado por máquina e não por gente (sufixos repetidos, barras duplicadas, o mesmo erro em muitas páginas) e me diga o que provavelmente está causando isso.\n\nAs URLs estão no anexo.', items:['No Search Console, clique em Páginas.','Abra "Não indexadas" → marque "Rastreada, mas não indexada no momento".','Exportar → baixa as URLs (até 1.000 por vez).','Cole as URLs no Claude com o prompt.','Analise o que é erro seu e o que pode ser ignorado.'], src:'Daniel Sócrates (@danielscrates.seo)', link:'https://instagram.com/p/De_6UXJnAeA'},
-
-  {type:'oferta', tool:'ia', title:'Reativação de leads com IA', teaser:'Retoma contatos parados no CRM, responde e identifica quem quer comprar.', price:'R$ 3.000 implantação + R$ 1.000/mês', src:'Matheus Hunoff (@matheushunoff)', link:'https://instagram.com/reels/Dey2BUBvzDk'},
-  {type:'oferta', tool:'ia', title:'Auditoria de vendas com IA', teaser:'Analisa ligações: erros do vendedor, objeções, oportunidades perdidas.', price:'R$ 5.000 por implantação', src:'Matheus Hunoff (@matheushunoff)', link:'https://instagram.com/reels/Dey2BUBvzDk'},
-  {type:'oferta', tool:'ia', title:'Base de conhecimento interna', teaser:'Transforma PDFs e manuais em IA que responde dúvidas dos funcionários.', price:'R$ 7.500 por projeto', src:'Matheus Hunoff (@matheushunoff)', link:'https://instagram.com/reels/Dey2BUBvzDk'},
-  {type:'oferta', tool:'ia', title:'Orçamentos automáticos', teaser:'Pra obras, energia solar, manutenção: organiza orçamento e proposta.', price:'R$ 5.000 por implantação', src:'Matheus Hunoff (@matheushunoff)', link:'https://instagram.com/reels/Dey2BUBvzDk'},
-  {type:'oferta', tool:'ia', title:'Catálogo de e-commerce com IA', teaser:'Organiza títulos, descrições, categorias e SEO de produtos em massa.', price:'R$ 4.000 por projeto', src:'Matheus Hunoff (@matheushunoff)', link:'https://instagram.com/reels/Dey2BUBvzDk'},
-  {type:'oferta', tool:'ia', title:'Processamento de documentos', teaser:'Lê e organiza notas, faturas, recibos e pedidos automaticamente.', price:'R$ 5.000 por implantação', src:'Matheus Hunoff (@matheushunoff)', link:'https://instagram.com/reels/Dey2BUBvzDk'},
-  {type:'oferta', tool:'ia', title:'Propostas comerciais com IA', teaser:'Usa briefing e dados do cliente pra montar propostas em minutos.', price:'R$ 5.000 por implantação', src:'Matheus Hunoff (@matheushunoff)', link:'https://instagram.com/reels/Dey2BUBvzDk'},
-  {type:'oferta', tool:'ia', title:'Agentes de inteligência artificial', teaser:'Atende clientes, qualifica leads, faz follow-up e agenda reuniões.', price:'R$ 12.000 implantação + R$ 500/mês', src:'Matheus Hunoff (@matheushunoff)', link:'https://instagram.com/reels/Dey2BUBvzDk'}
+// SEO — dentro de Prompts Profissionais.
+const PROFSEO = [
+  {title:'Auditoria de indexação (Search Console)', teaser:'Separa lixo de página real na lista de "rastreada, não indexada".', prompt:'Estou colando uma lista de URLs do relatório "Rastreada, mas não indexada no momento" do Google Search Console. Separe cada URL em categorias (ex.: duplicatas com UTM ou rastreamento, feeds RSS, paginação, caminhos malformados ou com erro de digitação, duplicatas com sufixo ou barra no final, parâmetros de referência externa, arquivos robots ou sitemap e URLs limpas de páginas reais).\n\nMe entregue:\n1) Uma tabela com categoria / quantidade / % do total\n2) Um parágrafo curto por categoria explicando o que causa e se é um problema real\n3) Uma divisão clara entre "erro meu, vale corrigir" e "o Google está tratando certo, ignore"\n4) As URLs específicas de páginas reais que valem investigar\n\nAponte qualquer padrão que pareça gerado por máquina e não por gente (sufixos repetidos, barras duplicadas, o mesmo erro em muitas páginas) e me diga o que provavelmente está causando isso.\n\nAs URLs estão no anexo.', items:['No Search Console, clique em Páginas.','Abra "Não indexadas" → marque "Rastreada, mas não indexada no momento".','Exportar → baixa as URLs (até 1.000 por vez).','Cole as URLs no Claude com o prompt.','Analise o que é erro seu e o que pode ser ignorado.']}
 ];
 
 
@@ -909,7 +896,12 @@ const SKILLS = [
   {type:'Rodar o escritório', title:'caveman', tagline:'Economia de tokens', desc:'Encurta as respostas pra economizar tokens.'},
   {type:'Rodar o escritório', title:'find-skills', tagline:'Caçador de skills', desc:'Acha a skill certa pra cada tarefa.'},
   {type:'Rodar o escritório', title:'Node.js', tagline:'Executor de scripts', desc:'Roda os scripts no seu computador.'},
-  {type:'Rodar o escritório', title:'Ollama', tagline:'Modelos locais', desc:'Roda modelos de IA no seu computador.'}
+  {type:'Rodar o escritório', title:'Ollama', tagline:'Modelos locais', desc:'Roda modelos de IA no seu computador.'},
+  {type:'Edição de vídeo', title:'Remotion', tagline:'Vídeo programável em React.', desc:'Monta e renderiza vídeo por código — legendas, cortes e motion graphics automatizados.', link:'https://github.com/remotion-dev/remotion'},
+  {type:'Edição de vídeo', title:'Hyperframes', tagline:'Motor de render de vídeo.', desc:'Processa e renderiza os projetos de vídeo montados no Claude Code.', link:'https://github.com/hyperframes/hyperframes'},
+  {type:'Edição de vídeo', title:'FFmpeg', tagline:'Canivete suíço de vídeo e áudio.', desc:'Corta, converte e processa vídeo/áudio por linha de comando.', link:'https://ffmpeg.org'},
+  {type:'Edição de vídeo', title:'Whisper', tagline:'Transcrição automática.', desc:'Transcreve a fala do vídeo pra gerar legendas automaticamente.', link:'https://github.com/openai/whisper'},
+  {type:'Edição de vídeo', title:'yt-dlp', tagline:'Baixa vídeos de referência.', desc:'Baixa vídeos de referência pra estudar estilo de edição antes de montar o seu.', link:'https://github.com/yt-dlp/yt-dlp'}
 ];
 
 (function(){
@@ -927,7 +919,7 @@ const SKILLS = [
   // ordem final: Claude → Skills → Motions → Gemini.
   const skillsSubHead = document.createElement('div');
   skillsSubHead.className = 'index-subhead';
-  skillsSubHead.textContent = 'Skills para Claude Code';
+  skillsSubHead.innerHTML = '<span class="subhead-label">Skills para Claude Code</span><p class="group-desc">Ferramentas que o Claude Code instala e usa sozinho — design, vídeo e automação do dia a dia.</p>';
   indexGrid.insertBefore(skillsSubHead, motionSubHeadEl);
   indexGrid.insertBefore(idx, motionSubHeadEl);
 
@@ -961,7 +953,8 @@ const SKILLS = [
       <div class="insta-title-row"><h4>${s.title}</h4></div>
       <div class="tagline">${s.tagline}</div>
       ${s.stat?`<div class="stat-badge">${s.stat}</div>`:''}
-      <div class="teaser">${s.desc}</div>`;
+      <div class="teaser">${s.desc}</div>
+      ${s.link?`<a class="btn-pill skill-install" href="${s.link}" target="_blank" rel="noopener">Manual de instalação ↗</a>`:''}`;
     addFavStar(card.querySelector('.insta-title-row'), commandId);
     grid.appendChild(card);
   });
@@ -975,7 +968,8 @@ const MCPS = [
   {title:'Context7', tagline:'Busca documentações atualizadas direto na conversa.', desc:'Evita que o Claude invente códigos desatualizados.', tools:'Claude Code, Claude Desktop, Cursor, Windsurf, VS Code (GitHub Copilot)'},
   {title:'Sequential Thinking', tagline:'Desenvolvido pela Anthropic.', desc:'O Claude para de adivinhar, planeja cada etapa e corrige seus próprios erros antes mesmo de mexer em qualquer código.', tools:'Claude Code, Claude Desktop, Cursor, Windsurf'},
   {title:'Codex Plugin', tagline:'Integra o Codex, da OpenAI, direto ao Claude.', desc:'Dois modelos de inteligência artificial de empresas diferentes analisam e verificam o trabalho um do outro.', tools:'Claude Code (integração específica com o Codex da OpenAI)'},
-  {title:'Memory MCP', tagline:'Também desenvolvido pela Anthropic.', desc:'O Claude ganha uma memória que permite lembrar de você entre diferentes conversas.', tools:'Claude Code, Claude Desktop, Cursor, Windsurf'}
+  {title:'Memory MCP', tagline:'Também desenvolvido pela Anthropic.', desc:'O Claude ganha uma memória que permite lembrar de você entre diferentes conversas.', tools:'Claude Code, Claude Desktop, Cursor, Windsurf'},
+  {title:'Kairogen', tagline:'Gera imagens e vídeos direto na conversa, sem sair do Claude.', desc:'Conector MCP personalizado: em "Personalizar" → "Conectores" → "+" → "Adicionar conector personalizado", acesse kairogen.ai, copie o link MCP e cole no Claude com o nome "Kairogen".', tools:'Claude (conector personalizado via kairogen.ai)'}
 ];
 
 (function(){
@@ -1033,7 +1027,7 @@ const MCPS = [
   sectionsEl.appendChild(details);
 })();
 
-// Prompts Pro — mega-prompts prontos de foto e vídeo profissional (prompts longos, não /comandos)
+// Prompts Profissionais — mega-prompts prontos de foto e vídeo profissional (prompts longos, não /comandos)
 const PROFPROMPTS = [
 {title:'Ambientação de Produto', teaser:'Cria fotos de still life pro seu produto preservando o produto 100% e aplicando a assinatura fotográfica de uma referência estética.', prompt:`Atue como diretor de fotografia e diretor de arte especializado em campanhas de produto, still life e fotografia editorial.
 
@@ -1578,19 +1572,42 @@ ANTES DE ENTREGAR: revise os cinco prompts. Se algum puder resultar em um retrat
 
 FORMATO: título curto em português; uma frase explicando onde a câmera foi colocada e por que o resultado será inusitado; prompt completo e independente em inglês, em bloco de código, pronto para copiar.
 
-Use sempre a imagem original como referência para cada geração.`}
+Use sempre a imagem original como referência para cada geração.`},
+
+  {title:'Efeito 4K', teaser:'Upscale preservando identidade, pose e fundo originais.', prompt:'Melhore a imagem para resolução 4K preservando fielmente a identidade, os traços, as proporções, a pose, a composição, a iluminação e o fundo originais. Aumente a nitidez e recupere os detalhes naturais da pele, do cabelo e das texturas. Reduza o ruído e os artefatos de compressão sem suavizar a pele nem aplicar filtros artificiais. Não altere, não deforme e não adicione elementos. Mantenha um resultado fotorrealista, natural e fiel à imagem de referência.'},
+  {title:'Pele melhorada', teaser:'Reduz imperfeições sem perder a textura real da pele.', prompt:'Melhore a pele mantendo completamente a identidade e a estrutura originais. Preserve poros, sardas, textura, reflexos e variações naturais. Reduza apenas imperfeições temporárias e vermelhidão. Mantenha a iluminação, os traços do rosto e a cor originais. Sem suavização excessiva, brilho artificial, remodelação facial ou nitidez exagerada. Resultado natural e fotorrealista.'},
+  {title:'Efeito GTA V', teaser:'Reconstrói a cena como ambiente 3D estilo videogame.', prompt:'Reconstrua a cena como um ambiente 3D realista de GTA V, mantendo fielmente pessoas, veículos, arquitetura, terreno, objetos, composição e perspectiva. Use estética de videogame com geometria 3D, texturas digitais, iluminação realista, sombras definidas e materiais típicos de GTA V. Os personagens devem parecer realistas, mas estilizados. Sem aparência fotográfica, cinematográfica ou profundidade de campo exagerada.'},
+  {title:'Efeito Minecraft', teaser:'Mantém a pessoa intacta e transforma só o fundo em blocos.', prompt:'Mantenha a pessoa 100% fotorrealista e intacta, preservando rosto, pele, cabelo, expressão, pose e roupa. Reconstrua apenas o fundo como uma réplica estruturalmente precisa de Minecraft, respeitando exatamente a perspectiva, a distribuição, as proporções e a posição dos elementos. Transforme os objetos que interagem com a pessoa em blocos de Minecraft. Iluminação natural e realista. Sem modificar a pessoa nem adicionar elementos.'},
+  {title:'Retrato profissional', teaser:'Vira retrato de estúdio com fundo cinza-claro e luz uniforme.', prompt:'Transforme a imagem em um retrato profissional de estúdio, mantendo exatamente a identidade, o rosto, a roupa, o cabelo e os acessórios originais. Enquadramento de cabeça e ombros, composição centralizada e olhar direto para a câmera. Fundo cinza-claro e limpo, com iluminação de estúdio suave e uniforme. Preserve a textura natural da pele, do cabelo e da roupa. Sem suavização excessiva, deformações ou mudanças no rosto. Resultado profissional e fotorrealista.'},
+  {title:'Efeito Paint', teaser:'Redesenho propositalmente tosco, estilo MS Paint.', prompt:'Redesenhe a imagem anexada do jeito mais tosco, rabiscado e lamentável possível. Use fundo branco e faça parecer desenhada num programa de pintura de computador antigo, com mouse. Deve lembrar vagamente a imagem original, mas não muito, como se alguém tivesse tentado copiar sem saber desenhar, com qualidade propositalmente baixa. Na real, faça o que quiser, não importa como fique. Use o estilo do Paint da Microsoft.'},
+  {title:'Mundo de LEGO', teaser:'Pessoa intacta, fundo reconstruído em peças de LEGO.', prompt:'Mantenha a pessoa 100% fotorrealista e intacta. Reconstrua o fundo como uma réplica precisa de LEGO, respeitando composição, perspectiva, proporções e posição de todos os elementos. Transforme os objetos que interagem com a pessoa em peças de LEGO na escala correta. Use iluminação diurna realista, sombras naturais e reflexos no plástico. O fundo deve parecer uma construção de LEGO detalhada e reconhecível. Sem modificar a pessoa nem adicionar texto.'},
+  {title:'Anúncio de produto', teaser:'Isola o produto e cria foto publicitária premium.', prompt:'Isole o produto da imagem de referência e crie uma foto publicitária premium, com iluminação profissional, cores precisas e materiais realistas. Crie o produto com seus ingredientes principais, com texturas naturais, sombras suaves, reflexos sutis e fundo desfocado. Mantenha uma composição equilibrada, atraente e comercial, sem aparência artificial.'},
+  {title:'Selfie em grupo', teaser:'Monta selfie espontânea mantendo rostos e poses originais.', prompt:'Crie uma selfie em grupo espontânea com as pessoas bem juntas, ombro a ombro, olhando para a câmera na altura dos olhos e mantendo seus rostos, expressões e poses originais. Use iluminação natural, textura de pele realista e as pequenas imperfeições de uma foto tirada com iPhone. Mantenha o fundo, a distribuição, as proporções, a perspectiva e o enquadramento originais.'},
+  {title:'Efeito anime', teaser:'Converte em ilustração 2D de anime sem mudar a composição.', prompt:'Transforme a imagem de referência em uma ilustração 2D de anime japonês, preservando exatamente a composição, o enquadramento, a pose, as proporções e a expressão dos personagens. Estilize os olhos, o cabelo e os traços com linhas limpas e sombreado suave, sem alterar a identidade nem exagerar a anatomia. Mantenha as cores, a iluminação e a perspectiva originais. Transforme também o fundo no estilo anime. Não mude o enquadramento, o zoom nem a composição da imagem.'},
+
+  {title:'Motion — Lançamento de App (30s)', teaser:'App Store style, iPhone 3D flutuando, brilho colorido.', prompt:'Crie em HTML (1920x1080, GSAP) um vídeo promocional de app de 30s, estilo lançamento da App Store: fundo escuro com brilho colorido, iPhone 3D flutuando, headline com palavra-chave em [COR], zoom na tela, cards saltando do celular e transições com blur.\n\nApp: [NOME] | Logo: [LOGO] | Tagline: [TAGLINE]\nCenas: [FRASE 1] → [FRASE 2] → [FRASE 3] → [FRASE 4] → [FRASE 5] → celulares em leque → logo + tagline.\nCrie a tela do app de cada cena de acordo com a frase.'},
+  {title:'Motion — Comercial de Produto (15s)', teaser:'Produto 3D girando como protagonista, echo trail.', prompt:'Crie em HTML (1920x1080, GSAP) um comercial de 15s para [PRODUTO]: duas cores ([COR] e quase-preto), tipografia extra bold em caixa alta, o produto em 3D girando como protagonista, transições rápidas com motion blur e echo trail.\n\nMarca: [NOME] | Logo: [LOGO] | Tagline: [TAGLINE]\nCenas: pontinho explode na tela → [FRASE 1] → close nos detalhes do produto → [FRASE 2] com o produto girando → [BENEFÍCIO 1] e [BENEFÍCIO 2] aparecendo em cards ao redor do produto → [FRASE 3] → [PALAVRA 1] [PALAVRA 2] [PALAVRA 3] → logo + tagline.'},
+  {title:'Motion — Minimalista P&B (30s)', teaser:'Headlines grandes, reveal palavra por palavra, P&B.', prompt:'Crie em HTML (1920x1080, fundo preto, GSAP) um motion de 30s estilo lançamento de app: minimalista P&B, headlines grandes com reveal palavra por palavra, mockups de UI, transições rápidas com echo trail e sem cortes secos. Marca: [NOME] | Logo: [LOGO] | Tagline: [TAGLINE]\n\nCenas: abertura com o logo → [FRASE 1] → [FRASE 2] → [FRASE 3] → [FRASE 4] → [FRASE 5] → elementos formam o logo → logo + tagline. Crie a UI de cada cena de acordo com a frase.'},
+  {title:'Motion — Showreel que Ensina Animação (15s)', teaser:'Squash & stretch, easing, follow-through, anticipation.', prompt:'Crie em HTML (16:9, GSAP) um showreel de motion designer de 15s que ensina princípios de animação. Visual: fundo alternando cinza claro e grafite, fonte condensada pesada, azul e vermelho de destaque, anotações manuscritas com setinhas.\n\nCenas: bolinha quicando com rastro (squash & stretch) → vira o ponto final de "[FRASE DE ABERTURA]." → palavras animadas pelo próprio significado: [PALAVRA 1], [PALAVRA 2], [PALAVRA 3], [PALAVRA 4] → gráfico de easing (linear vs ease in-out) → cobrinha de pontos num grid (follow-through) → dial carregando até 100% (anticipation) → "[CARGO] / [NOME]." + nota manuscrita "[CTA]".'},
+  {title:'Motion — Apresentação Pessoal (15s)', teaser:'Wipes, íris, count-up de números, uma palavra por frase.', prompt:'Crie em HTML (1920x1080, GSAP) um vídeo de apresentação pessoal de 15s: fundo preto alternando com [COR], tipografia bold com uma palavra por frase em itálico serifado colorido, transições com wipes e iris, números com count-up.\n\nDados: [NOME] | [CARGO] | Foto: [FOTO] | Instagram: [@]\nCenas: linha vira pílula que forma o "O" do nome → foto em círculo com texto girando + [FRASE DE IMPACTO] → [DESTAQUE 1], [DESTAQUE 2] e [DESTAQUE 3] com infográficos animados → foto + nome + [CTA] com botão "Seguir" sendo clicado.'},
+
+  {title:'Definir ficha de estilo', teaser:'Claude estuda vídeos de referência e monta a ficha de estilo.', prompt:'Aprenda o estilo de edição desses vídeos: [link1], [link2], [link3].\n\n1. Estude o que eles têm em comum: fontes, cores e legendas; cortes, zooms e ritmo; motion graphics, música e som.\n2. Monte uma ficha de estilo pra eu revisar. Com a minha cara, não uma cópia.\n\nQuando eu aprovar, segue ele toda vez que editar pra mim.\nEstrutura da ficha de estilo: fontes | cores | legendas | cortes | ritmo | música.'},
+  {title:'Editar e exportar reel', teaser:'Corta pausas, aplica ficha de estilo, legenda e exporta.', prompt:'Edita o meu vídeo novo e transforma num Reel de Instagram. [NOME DO ARQUIVO], na pasta de material bruto.\n\n1. Corte todo pause maior que 0,1 segundo.\n2. Segue a minha ficha de estilo.\n3. Coloca legendas, música e motion graphics.\n4. Usa o que for vivo dos cortes de referência.\n5. Me mostra um storyboard pra revisar primeiro e depois exporta na pasta de exportações.'}
 ];
 
 (function(){
   const id = 'prof-1';
-  const searchText = ('Prompts Pro Profissionais foto video '+PROFPROMPTS.map(p=>p.title+' '+p.teaser).join(' ')).toLowerCase();
+  const searchText = ('Foto e Vídeo Prompts Profissionais '+PROFPROMPTS.map(p=>p.title+' '+p.teaser).join(' ')).toLowerCase();
+
+  addGroupHead('Prompts Profissionais', 'Mega-prompts prontos de fotografia e vídeo profissional — cole o texto inteiro como instrução inicial, antes de anexar suas imagens.');
+  addSubHead('Foto e Vídeo', 'Ambientação de produto, retrato, VFX, anúncio em vídeo e efeitos de imagem prontos pra usar.');
 
   const idx = document.createElement('button');
   idx.className = 'idx-card';
   idx.style.animationDelay = nextDelay();
   idx.dataset.part = 'prof';
   idx.dataset.searchtext = searchText;
-  idx.innerHTML = `<span class="num">PRO</span><span class="nm">Prompts Pro — Foto e Vídeo</span><span class="ct">${PROFPROMPTS.length} prompts</span>`;
+  idx.innerHTML = `<span class="num">PRO</span><span class="nm">Foto e Vídeo</span><span class="ct">${PROFPROMPTS.length} prompts</span>`;
   idx.addEventListener('click', ()=>goDetail(id, idx.dataset.part));
   indexGrid.appendChild(idx);
 
@@ -1603,7 +1620,7 @@ Use sempre a imagem original como referência para cada geração.`}
     <summary class="cat-head">
       <div class="cat-head-left">
         <span class="cat-badge">P</span>
-        <h3>Prompts Pro — Foto e Vídeo</h3>
+        <h3>Foto e Vídeo</h3>
       </div>
       <div style="display:flex;align-items:center;gap:10px;">
         <span class="cat-count">${PROFPROMPTS.length}</span>
@@ -1649,16 +1666,19 @@ Use sempre a imagem original como referência para cada geração.`}
   sectionsEl.appendChild(details);
 })();
 
+// SEO — sub-seção simples dentro de Prompts Profissionais.
 (function(){
-  const id = 'insta-1';
-  const searchText = ('Edição de Imagem — prompts de geração e edição de imagem '+INSTA.map(i=>i.title+' '+i.teaser+' '+(i.prompt||'')).join(' ')).toLowerCase();
+  const id = 'profseo-1';
+  const searchText = ('SEO '+PROFSEO.map(i=>i.title+' '+i.teaser+' '+i.prompt).join(' ')).toLowerCase();
+
+  addSubHead('SEO', 'Prompts pra investigar e corrigir problemas de indexação e busca.');
 
   const idx = document.createElement('button');
   idx.className = 'idx-card';
   idx.style.animationDelay = nextDelay();
   idx.dataset.part = 'prof';
   idx.dataset.searchtext = searchText;
-  idx.innerHTML = `<span class="num">IMG</span><span class="nm">Edição de Imagem</span><span class="ct">${INSTA.length} prompts</span>`;
+  idx.innerHTML = `<span class="num">SEO</span><span class="nm">SEO</span><span class="ct">${PROFSEO.length} prompt${PROFSEO.length>1?'s':''}</span>`;
   idx.addEventListener('click', ()=>goDetail(id, idx.dataset.part));
   indexGrid.appendChild(idx);
 
@@ -1667,78 +1687,87 @@ Use sempre a imagem original como referência para cada geração.`}
   details.className = 'cat';
   details.dataset.part = 'prof';
   details.dataset.searchtext = searchText;
-
-  const types = [...new Set(INSTA.map(i=>i.type))];
-  const tools = [...new Set(INSTA.map(i=>i.tool))];
-  const typeChips = ['<button class="insta-chip active" data-ifilter="type" data-val="all">Todos os tipos</button>']
-    .concat(types.map(t=>`<button class="insta-chip" data-ifilter="type" data-val="${t}">${TYPE_LABELS[t]}</button>`)).join('');
-  const toolChips = ['<button class="insta-chip active" data-ifilter="tool" data-val="all">Todas as ferramentas</button>']
-    .concat(tools.map(t=>`<button class="insta-chip" data-ifilter="tool" data-val="${t}">${TOOL_LABELS[t]}</button>`)).join('');
-
   details.innerHTML = `
     <summary class="cat-head">
-      <div class="cat-head-left">
-        <span class="cat-badge">IMG</span>
-        <h3>Edição de Imagem</h3>
-      </div>
+      <div class="cat-head-left"><span class="cat-badge">SEO</span><h3>SEO</h3></div>
       <div style="display:flex;align-items:center;gap:10px;">
-        <span class="cat-count">${INSTA.length}</span>
+        <span class="cat-count">${PROFSEO.length}</span>
         <svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m6 9 6 6 6-6"/></svg>
       </div>
     </summary>
-    <div class="cat-body">
-      <div class="insta-filters">
-        <div class="insta-filter-group"><span class="lbl">Tipo</span><div class="insta-chips" data-chipgroup="type">${typeChips}</div></div>
-        <div class="insta-filter-group"><span class="lbl">Ferramenta / IA</span><div class="insta-chips" data-chipgroup="tool">${toolChips}</div></div>
-      </div>
-      <div class="insta-grid" id="instaGrid"></div>
-      <div class="insta-empty" id="instaEmpty" hidden>Nenhuma dica nesse filtro.</div>
-    </div>`;
+    <div class="cat-body"><div class="insta-grid" id="profseoGrid"></div></div>`;
 
-  const grid = details.querySelector('#instaGrid');
-  INSTA.forEach(item=>{
+  const grid = details.querySelector('#profseoGrid');
+  PROFSEO.forEach(item=>{
     const card = document.createElement('div');
     card.className = 'insta-card';
-    const commandId = 'img-'+item.title;
+    const commandId = 'seo-'+item.title;
     card.dataset.commandId = commandId;
-    card.dataset.itype = item.type;
-    card.dataset.itool = item.tool;
-    card.dataset.searchtext = (item.title+' '+item.teaser+' '+(item.prompt||'')+' '+(item.items||[]).join(' ')).toLowerCase();
-    const promptBlock = item.prompt ? `
+    card.dataset.searchtext = (item.title+' '+item.teaser+' '+item.prompt).toLowerCase();
+    card.innerHTML = `
+      <div class="insta-title-row"><h4>${item.title}</h4></div>
+      <div class="teaser">${item.teaser}</div>
+      <ul class="ilist">${item.items.map(li=>`<li>${li}</li>`).join('')}</ul>
       <div class="insta-actions">
         <button class="toggle-btn" type="button">Ver prompt</button>
         <button class="primary copy-btn" type="button">Copiar prompt</button>
       </div>
-      <div class="insta-prompt-wrap"><div class="insta-prompt"></div></div>` : '';
-    const listBlock = item.items ? `<ul class="ilist">${item.items.map(li=>`<li>${li}</li>`).join('')}</ul>` : '';
-    const priceBlock = item.price ? `<div class="price">${item.price}</div>` : '';
-    card.innerHTML = `
-      <div class="insta-tags"><span class="insta-tag type">${TYPE_LABELS[item.type]}</span><span class="insta-tag tool">${TOOL_LABELS[item.tool]}</span></div>
-      <div class="insta-title-row"><h4>${item.title}</h4></div>
-      <div class="teaser">${item.teaser}</div>
-      ${priceBlock}${listBlock}${promptBlock}`;
+      <div class="insta-prompt-wrap"><div class="insta-prompt"></div></div>`;
     addFavStar(card.querySelector('.insta-title-row'), commandId);
-    if(item.prompt){
-      card.querySelector('.insta-prompt').textContent = item.prompt;
-      card.querySelector('.toggle-btn').addEventListener('click', ()=>{
-        const open = card.classList.toggle('open');
-        card.querySelector('.toggle-btn').textContent = open ? 'Fechar prompt' : 'Ver prompt';
-      });
-      card.querySelector('.copy-btn').addEventListener('click', ()=>copyText(item.prompt, `Prompt "${item.title}" copiado`));
-    }
+    card.querySelector('.insta-prompt').textContent = item.prompt;
+    card.querySelector('.toggle-btn').addEventListener('click', ()=>{
+      const open = card.classList.toggle('open');
+      card.querySelector('.toggle-btn').textContent = open ? 'Fechar prompt' : 'Ver prompt';
+    });
+    card.querySelector('.copy-btn').addEventListener('click', ()=>copyText(item.prompt, `Prompt "${item.title}" copiado`));
     grid.appendChild(card);
   });
 
-  details.querySelectorAll('.insta-chip').forEach(chip=>{
-    chip.addEventListener('click', ()=>{
-      const group = chip.closest('.insta-chips').dataset.chipgroup;
-      details.querySelectorAll(`.insta-chips[data-chipgroup="${group}"] .insta-chip`).forEach(c=>c.classList.remove('active'));
-      chip.classList.add('active');
-      if(group==='type'){ currentInstaType = chip.dataset.val; } else { currentInstaTool = chip.dataset.val; }
-      render();
-      const visible = grid.querySelectorAll('.insta-card:not([hidden])').length;
-      details.querySelector('#instaEmpty').hidden = visible>0;
-    });
+  sectionsEl.appendChild(details);
+})();
+
+// Sites Utilitários — grupo raiz próprio, fora de ChatGPT/Claude/Gemini/Prompts Profissionais.
+(function(){
+  const id = 'sites-bancos-1';
+  const searchText = ('Sites Utilitários Bancos de Imagem '+SITES_BANCOS.map(s=>s.title+' '+s.desc).join(' ')).toLowerCase();
+
+  addGroupHead('Sites Utilitários', 'Ferramentas e bancos de recursos externos que não são de uma IA específica.');
+  addSubHead('Bancos de Imagem', 'Fontes pra ilustrar conteúdo com still de filmes e séries.');
+
+  const idx = document.createElement('button');
+  idx.className = 'idx-card';
+  idx.style.animationDelay = nextDelay();
+  idx.dataset.part = 'sites';
+  idx.dataset.searchtext = searchText;
+  idx.innerHTML = `<span class="num">SITE</span><span class="nm">Bancos de Imagem</span><span class="ct">${SITES_BANCOS.length} sites</span>`;
+  idx.addEventListener('click', ()=>goDetail(id, idx.dataset.part));
+  indexGrid.appendChild(idx);
+
+  const details = document.createElement('details');
+  details.id = id;
+  details.className = 'cat';
+  details.dataset.part = 'sites';
+  details.dataset.searchtext = searchText;
+  details.innerHTML = `
+    <summary class="cat-head">
+      <div class="cat-head-left"><span class="cat-badge">SITE</span><h3>Bancos de Imagem</h3></div>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <span class="cat-count">${SITES_BANCOS.length}</span>
+        <svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="m6 9 6 6 6-6"/></svg>
+      </div>
+    </summary>
+    <div class="cat-body"><div class="insta-grid" id="sitesBancosGrid"></div></div>`;
+
+  const grid = details.querySelector('#sitesBancosGrid');
+  SITES_BANCOS.forEach(s=>{
+    const card = document.createElement('div');
+    card.className = 'insta-card';
+    const commandId = 'site-'+s.title;
+    card.dataset.commandId = commandId;
+    card.dataset.searchtext = (s.title+' '+s.desc).toLowerCase();
+    card.innerHTML = `<div class="insta-title-row"><h4>${s.title}</h4></div><div class="teaser">${s.desc}</div>`;
+    addFavStar(card.querySelector('.insta-title-row'), commandId);
+    grid.appendChild(card);
   });
 
   sectionsEl.appendChild(details);
@@ -1759,6 +1788,33 @@ function copyText(text, label){
   } else { fallbackCopy(text,show); }
 }
 function copyCmd(cmd){ copyText('/'+cmd, `Copiado: /${cmd}`); }
+
+// Sugestão de prompt/comando enviada pelo usuário — grava em /api/suggestions
+const suggestOverlay = document.getElementById('suggestOverlay');
+const suggestForm = document.getElementById('suggestForm');
+function openSuggestModal(){ suggestOverlay.hidden = false; }
+function closeSuggestModal(){ suggestOverlay.hidden = true; }
+document.getElementById('suggestClose').addEventListener('click', closeSuggestModal);
+suggestOverlay.addEventListener('click', (e)=>{ if(e.target===suggestOverlay) closeSuggestModal(); });
+suggestForm.addEventListener('submit', async (e)=>{
+  e.preventDefault();
+  const category = document.getElementById('suggestCategory').value;
+  const text = document.getElementById('suggestText').value.trim();
+  if(!text) return;
+  const btn = document.getElementById('suggestSubmit');
+  btn.disabled = true; btn.textContent = 'Enviando…';
+  try{
+    const res = await fetch('/api/suggestions', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({category, text}) });
+    if(!res.ok) throw new Error();
+    showToast('Sugestão enviada — obrigado!');
+    suggestForm.reset();
+    closeSuggestModal();
+  }catch(e){
+    showToast('Não deu pra enviar, tenta de novo.');
+  }finally{
+    btn.disabled = false; btn.textContent = 'Enviar sugestão';
+  }
+});
 
 // Favoritos — estrela em cada card, sincronizada com /api/favorites (same-origin, cookie de sessão já vai junto)
 function renderStarState(star, commandId){
@@ -1913,7 +1969,7 @@ function updateBreadcrumb(){
   const trail = document.getElementById('breadcrumbTrail');
   if(viewMode==='home' || favoritesOnly || searchInput.value.trim()){ bar.hidden = true; return; }
   bar.hidden = false;
-  const partLbl = ({chatgpt:'ChatGPT', claude:'Claude', gemini:'Gemini', prof:'Prompts Pro'})[currentPart] || 'Todos';
+  const partLbl = ({chatgpt:'ChatGPT', claude:'Claude', gemini:'Gemini', prof:'Prompts Profissionais', sites:'Sites Utilitários'})[currentPart] || '';
   let html = `<button class="crumb" type="button" data-go="home">Início</button>`;
   if(viewMode==='detail'){
     const sec = document.getElementById(viewTarget);
@@ -1933,7 +1989,7 @@ document.getElementById('btnBack').addEventListener('click', ()=>{
 function goHome(){
   viewMode = 'home'; viewTarget = null; currentPart = 'all'; favoritesOnly = false;
   partButtons.forEach(x=>x.classList.remove('active'));
-  document.querySelector('#partSeg button[data-part="all"]').classList.add('active');
+  document.querySelectorAll('.sidenav-top').forEach(x=>x.classList.remove('active'));
   history.pushState(null,'','#/');
   render();
   window.scrollTo({top:0, behavior:'smooth'});
@@ -1959,13 +2015,22 @@ function goDetail(id, part){
   render();
   window.scrollTo({top:0, behavior:'smooth'});
 }
+const BRAND_ICONS = {
+  chatgpt:'<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2a4 4 0 0 0-3.46 2A4 4 0 0 0 4 7.5a4 4 0 0 0 1.2 7.2 4 4 0 0 0 3.34 5.8A4 4 0 0 0 12 22a4 4 0 0 0 3.46-2 4 4 0 0 0 4.54-5.8A4 4 0 0 0 20 7.5a4 4 0 0 0-4.54-3.5A4 4 0 0 0 12 2Z" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="12" r="2.6" fill="currentColor"/></svg>',
+  claude:'<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 3v7"/><path d="M12 14v7"/><path d="M5.5 6.5l5 5"/><path d="M13.5 12.5l5 5"/><path d="M18.5 6.5l-5 5"/><path d="M10.5 12.5l-5 5"/></g></svg>',
+  gemini:'<svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M12 2c.6 4.2 1.8 6.9 3.4 8.6 1.7 1.6 4.4 2.8 8.6 3.4-4.2.6-6.9 1.8-8.6 3.4-1.6 1.7-2.8 4.4-3.4 8.6-.6-4.2-1.8-6.9-3.4-8.6C6.9 15.8 4.2 14.6 0 14c4.2-.6 6.9-1.8 8.6-3.4C10.2 8.9 11.4 6.2 12 2Z"/></svg>',
+  prof:'<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 20.5V17l10-10 3.5 3.5-10 10H4Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M14.5 6.5 17 4l3 3-2.5 2.5" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg>',
+  sites:'<svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7"/><path d="M3 12h18M12 3c2.5 2.6 3.8 5.7 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.7-3.8-9S9.5 5.6 12 3Z" stroke="currentColor" stroke-width="1.7"/></svg>'
+};
+
 function buildHomeGrid(){
   const homeGrid = document.getElementById('homeGrid');
   const TILES = [
-    {part:'chatgpt', icon:'💬', label:'ChatGPT', desc:'Comandos de texto e efeitos visuais', count: totalChatGPT},
-    {part:'claude', icon:'🟣', label:'Claude', desc:'Comandos, Skills, Motions e MCPs', count: totalClaude},
-    {part:'gemini', icon:'✨', label:'Gemini', desc:'Comandos específicos do Gemini', count: totalGemini},
-    {part:'prof', icon:'📸', label:'Prompts Pro', desc:'Fotografia, vídeo e edição de imagem', count: totalProf}
+    {part:'chatgpt', icon:BRAND_ICONS.chatgpt, label:'ChatGPT', desc:'Comandos de texto e efeitos visuais', count: totalChatGPT},
+    {part:'claude', icon:BRAND_ICONS.claude, label:'Claude', desc:'Comandos, Skills, Motions e MCPs', count: totalClaude},
+    {part:'gemini', icon:BRAND_ICONS.gemini, label:'Gemini', desc:'Comandos específicos do Gemini', count: totalGemini},
+    {part:'prof', icon:BRAND_ICONS.prof, label:'Prompts Profissionais', desc:'Fotografia, vídeo e SEO', count: totalProf},
+    {part:'sites', icon:BRAND_ICONS.sites, label:'Sites Utilitários', desc:'Ferramentas e bancos de recursos externos', count: totalSites}
   ];
   TILES.forEach(t=>{
     const tile = document.createElement('button');
@@ -1991,7 +2056,7 @@ function routeFromHash(){
   currentPart = part;
   partButtons.forEach(x=>x.classList.remove('active'));
   const btn = document.querySelector(`#partSeg button[data-part="${part}"]`);
-  if(btn) btn.classList.add('active'); else document.querySelector('#partSeg button[data-part="all"]').classList.add('active');
+  if(btn) btn.classList.add('active');
   if(target){
     viewMode = 'detail'; viewTarget = target;
     const sec = document.getElementById(target);
@@ -2005,7 +2070,6 @@ function setFavoritesOnly(v){
   favoritesOnly = v;
   if(v){
     partButtons.forEach(x=>x.classList.remove('active'));
-    document.querySelector('#partSeg button[data-part="all"]').classList.add('active');
     document.querySelectorAll('.sidenav-top').forEach(x=>x.classList.remove('active'));
     const favBtnEl = document.querySelector('.sidenav-fav');
     if(favBtnEl) favBtnEl.classList.add('active');
@@ -2043,8 +2107,9 @@ document.getElementById('sideNavClose').addEventListener('click', closeSideNavMo
 sideNavScrim.addEventListener('click', closeSideNavMobile);
 
 function buildSideNav(){
-  const PART_LABEL = {chatgpt:'ChatGPT', claude:'Claude', gemini:'Gemini', prof:'Prompts Pro'};
-  const PART_ORDER = ['chatgpt','claude','gemini','prof'];
+  const PART_LABEL = {chatgpt:'ChatGPT', claude:'Claude', gemini:'Gemini', prof:'Prompts Profissionais', sites:'Sites Utilitários'};
+  const PART_ORDER = ['chatgpt','claude','gemini','prof','sites'];
+  const PART_ICONS = BRAND_ICONS;
   const tree = document.getElementById('sideNavTree');
 
   const favBtn = document.createElement('button');
@@ -2058,29 +2123,41 @@ function buildSideNav(){
   });
   tree.appendChild(favBtn);
 
-  const allBtn = document.createElement('button');
-  allBtn.type = 'button';
-  allBtn.className = 'sidenav-top';
-  allBtn.textContent = 'Todos';
-  allBtn.addEventListener('click', ()=>{
-    document.querySelector('#partSeg button[data-part="all"]').click();
+  const homeBtn = document.createElement('button');
+  homeBtn.type = 'button';
+  homeBtn.className = 'sidenav-top';
+  homeBtn.textContent = '🏠 Início';
+  homeBtn.addEventListener('click', ()=>{
+    goHome();
     closeSideNavMobile();
   });
-  tree.appendChild(allBtn);
+  tree.appendChild(homeBtn);
+
+  const suggestBtn = document.createElement('button');
+  suggestBtn.type = 'button';
+  suggestBtn.className = 'sidenav-top';
+  suggestBtn.textContent = '💡 Sugerir um prompt';
+  suggestBtn.addEventListener('click', ()=>{
+    openSuggestModal();
+    closeSideNavMobile();
+  });
+  tree.appendChild(suggestBtn);
 
   // agrupa os idx-card já existentes por part, carregando o rótulo do megahead/subhead mais recente
-  let curLabel = null;
-  const nodesByPart = {chatgpt:[], claude:[], gemini:[], prof:[]};
+  let curGroup = null, curSub = null;
+  const nodesByPart = {chatgpt:[], claude:[], gemini:[], prof:[], sites:[]};
   Array.from(indexGrid.children).forEach(el=>{
-    if(el.classList.contains('index-megahead')){ curLabel = el.textContent; }
-    else if(el.classList.contains('index-subhead')){ curLabel = el.textContent; }
+    if(el.classList.contains('index-megahead')){ curGroup = (el.querySelector('h2')||el).textContent; curSub = null; }
+    else if(el.classList.contains('index-subhead')){ curSub = (el.querySelector('.subhead-label')||el).textContent; }
     else if(el.classList.contains('idx-card')){
       const part = el.dataset.part;
       if(!nodesByPart[part]) return;
       const nmEl = el.querySelector('.nm');
       const nm = nmEl ? nmEl.textContent : '';
+      const curLabel = curSub || curGroup;
       const redundant = !curLabel || curLabel.toLowerCase()===PART_LABEL[part].toLowerCase() || nm.toLowerCase().startsWith(curLabel.toLowerCase());
-      nodesByPart[part].push({label: redundant ? null : curLabel, nm, el});
+      const groupRedundant = !curGroup || curGroup.toLowerCase()===PART_LABEL[part].toLowerCase() || curGroup===curLabel;
+      nodesByPart[part].push({label: redundant ? null : curLabel, group: groupRedundant ? null : curGroup, nm, el});
     }
   });
 
@@ -2089,15 +2166,22 @@ function buildSideNav(){
     topBtn.type = 'button';
     topBtn.className = 'sidenav-top';
     topBtn.dataset.part = part;
-    topBtn.textContent = PART_LABEL[part];
+    topBtn.innerHTML = `${PART_ICONS[part]||''}<span>${PART_LABEL[part]}</span>`;
     topBtn.addEventListener('click', ()=>{
       document.querySelector(`#partSeg button[data-part="${part}"]`).click();
       closeSideNavMobile();
     });
     tree.appendChild(topBtn);
 
-    let lastLabel = null;
+    let lastLabel = null, lastGroup = null;
     nodesByPart[part].forEach(node=>{
+      if(node.group && node.group!==lastGroup){
+        const gg = document.createElement('div');
+        gg.className = 'sidenav-group sidenav-group-top';
+        gg.textContent = node.group;
+        tree.appendChild(gg);
+      }
+      lastGroup = node.group;
       if(node.label && node.label!==lastLabel){
         const g = document.createElement('div');
         g.className = 'sidenav-group';
